@@ -1,0 +1,617 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>A Letter For You 💌</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;500;600;700&family=Satisfy&family=Indie+Flower&family=Kalam:wght@300;400;700&family=Shadows+Into+Light&family=Patrick+Hand&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../css/style.css" />
+  <link rel="stylesheet" href="../css/final.css" />
+  <link rel="stylesheet" href="../css/scrapbook.css" />
+</head>
+<body class="final-page">
+
+<style>
+/* ── Final page specific overrides & new elements ── */
+body.final-page {
+  background-color: #fff8fa !important;
+  background-image:
+    radial-gradient(ellipse 5px 4px at 18px 18px, rgba(212,116,138,.09) 60%, transparent 70%),
+    radial-gradient(ellipse 3px 3px at 12px 12px, rgba(212,116,138,.06) 60%, transparent 70%),
+    radial-gradient(ellipse 5px 4px at 42px 40px, rgba(212,116,138,.07) 60%, transparent 70%) !important;
+  background-size: 54px 54px !important;
+}
+
+/* ── Lace header/footer strips ── */
+.final-lace-top {
+  width:100%; height:28px;
+  background-image: radial-gradient(circle 12px at 12px 100%, transparent 11px, rgba(245,205,214,0.7) 12px, rgba(245,205,214,0.7) 16px, transparent 17px);
+  background-size:24px 28px; background-repeat:repeat-x;
+  background-color:rgba(253,232,237,0.35);
+}
+.final-lace-bot {
+  width:100%; height:22px; margin-top:8px;
+  background-image: radial-gradient(circle 9px at 9px 0%, transparent 8px, rgba(245,205,214,0.65) 9px, rgba(245,205,214,0.65) 12px, transparent 13px);
+  background-size:18px 22px; background-repeat:repeat-x;
+}
+
+/* ── Main stage layout ── */
+.final-stage {
+  display:flex; flex-direction:column; align-items:center;
+  padding:36px 20px 60px; min-height:80vh;
+  position:relative; z-index:1;
+}
+
+/* ── Title block ── */
+.final-title-block { text-align:center; margin-bottom:36px; position:relative; }
+.final-title-block h1 {
+  font-family:'Satisfy',cursive;
+  font-size:clamp(2.4rem,7vw,4.6rem);
+  color:#8b4055;
+  text-shadow:2px 3px 0 rgba(245,192,208,0.75), 4px 5px 0 rgba(212,116,138,0.15);
+  line-height:1.05;
+}
+.final-title-block .pre-line {
+  font-family:'Shadows Into Light',cursive;
+  font-size:1rem; color:#a06070; letter-spacing:.18em;
+  opacity:.75; display:block; margin-bottom:6px;
+}
+.final-title-block .post-line {
+  font-family:'Indie Flower',cursive;
+  font-size:.9rem; color:#a06070; letter-spacing:.12em;
+  opacity:.65; display:block; margin-top:8px;
+}
+
+/* ── Envelope container ── */
+.env-outer {
+  position:relative; width:320px; max-width:88vw;
+  cursor:pointer; transition:transform .35s ease;
+}
+.env-outer:hover { transform:translateY(-5px) scale(1.02); }
+
+/* Lace border around envelope */
+.env-lace-border {
+  position:absolute; inset:-14px;
+  border-radius:10px;
+  border:none;
+  background-image:
+    radial-gradient(circle 6px at 6px 6px,   transparent 5px, rgba(245,205,214,0.6) 6px, rgba(245,205,214,0.6) 8px, transparent 9px),
+    radial-gradient(circle 6px at calc(100% - 6px) 6px, transparent 5px, rgba(245,205,214,0.6) 6px, rgba(245,205,214,0.6) 8px, transparent 9px);
+  background-size:14px 14px, 14px 14px;
+  background-repeat:repeat;
+  pointer-events:none; z-index:0; opacity:.6;
+}
+
+/* Envelope CSS shape */
+.envelope { width:100%; aspect-ratio:3/2; position:relative; }
+.env-body {
+  position:absolute; inset:0;
+  background:linear-gradient(160deg,#f7c5d0 0%,#fde8ed 55%,#f5e6d3 100%);
+  border-radius:4px 4px 8px 8px;
+  border:1.5px solid rgba(212,116,138,0.3);
+  box-shadow:0 8px 32px rgba(180,80,100,0.22), 0 2px 8px rgba(0,0,0,0.06);
+}
+/* Side triangle folds */
+.env-body::before {
+  content:''; position:absolute; bottom:0; left:0;
+  border-style:solid; border-width:0 0 120px 160px;
+  border-color:transparent transparent rgba(240,160,184,0.25) transparent;
+}
+.env-body::after {
+  content:''; position:absolute; bottom:0; right:0;
+  border-style:solid; border-width:120px 160px 0 0;
+  border-color:rgba(240,160,184,0.18) transparent transparent transparent;
+}
+/* Bottom V flap */
+.env-bottom {
+  position:absolute; bottom:0; left:0; right:0; height:60%;
+  background:linear-gradient(160deg,#fde8ed,#f7c5d0);
+  clip-path:polygon(0 100%,50% 0%,100% 100%);
+  border-radius:0 0 8px 8px;
+}
+/* Top flap */
+.env-flap {
+  position:absolute; top:0; left:0; right:0; height:56%;
+  background:linear-gradient(170deg,#e898b0,#f0a0b8,#f7c5d0);
+  clip-path:polygon(0 0,50% 100%,100% 0);
+  transform-origin:top center;
+  transition:transform .65s cubic-bezier(.34,1.2,.64,1);
+  border-radius:4px 4px 0 0; z-index:5;
+  /* Lace edge on flap */
+  box-shadow:0 6px 16px rgba(180,80,100,0.12);
+}
+/* Lace overlay on flap edge */
+.env-flap::after {
+  content:'';
+  position:absolute; bottom:-4px; left:0; right:0; height:10px;
+  background-image:radial-gradient(circle 5px at 5px 50%, rgba(253,232,237,0.8) 4px, transparent 5px);
+  background-size:12px 100%; background-repeat:repeat-x;
+}
+.env-outer.open .env-flap { transform:rotateX(180deg); }
+
+/* Rose wax seal on flap */
+.env-seal {
+  position:absolute; top:14%; left:50%; transform:translateX(-50%);
+  z-index:6; transition:transform .4s ease, opacity .35s ease;
+  filter:drop-shadow(0 2px 5px rgba(0,0,0,0.14));
+}
+.env-outer.open .env-seal { transform:translateX(-50%) scale(0); opacity:0; }
+
+/* Letter peeking out */
+.env-letter-peek {
+  position:absolute; bottom:18%; left:8%; right:8%; height:44%;
+  background:#fff; border-radius:3px 3px 1px 1px;
+  box-shadow:0 -4px 14px rgba(0,0,0,0.07);
+  transform:translateY(22px); opacity:0;
+  transition:transform .55s ease .45s, opacity .55s ease .45s;
+  z-index:4;
+  background-image:repeating-linear-gradient(transparent,transparent 9px,rgba(212,116,138,0.12) 9px,rgba(212,116,138,0.12) 10px);
+}
+.env-outer.open .env-letter-peek { transform:translateY(-28px); opacity:1; }
+
+/* Hint text */
+.env-hint {
+  text-align:center; font-family:'Indie Flower',cursive;
+  font-size:.95rem; color:#a06070; margin-top:18px;
+  opacity:.7; animation:arrowBounce 1.5s ease-in-out infinite;
+  transition:opacity .3s ease;
+}
+
+/* Decorative roses pinned to envelope corners */
+.env-rose-tl, .env-rose-tr, .env-rose-bl, .env-rose-br {
+  position:absolute; z-index:10; pointer-events:none;
+}
+.env-rose-tl { top:-20px; left:-16px; transform:rotate(-20deg); }
+.env-rose-tr { top:-18px; right:-14px; transform:rotate(15deg); }
+.env-rose-bl { bottom:-16px; left:-12px; transform:rotate(10deg); }
+.env-rose-br { bottom:-14px; right:-10px; transform:rotate(-15deg); }
+
+/* Ribbon strip across envelope */
+.env-ribbon {
+  position:absolute; z-index:8; pointer-events:none;
+  height:12px; background:linear-gradient(90deg,rgba(240,160,184,0.7),rgba(245,205,214,0.85),rgba(240,160,184,0.7));
+  border-radius:2px; box-shadow:0 1px 4px rgba(180,80,100,0.15);
+}
+
+/* ── Letter container ── */
+.letter-container {
+  max-width:580px; width:90vw;
+  max-height:0; overflow:hidden; opacity:0;
+  transition:max-height .9s cubic-bezier(.4,0,.2,1), margin-top .5s ease, opacity .65s ease;
+}
+.letter-container.revealed { max-height:1000px; margin-top:44px; opacity:1; }
+
+/* ── Letter paper ── */
+.letter-paper {
+  background:#fffdf9; border-radius:4px;
+  padding:52px 48px 44px;
+  box-shadow:0 8px 36px rgba(180,80,100,0.18), 0 2px 8px rgba(0,0,0,0.06);
+  position:relative;
+  /* Lined paper */
+  background-image:repeating-linear-gradient(transparent,transparent 27px,rgba(212,116,138,0.1) 27px,rgba(212,116,138,0.1) 28px);
+  background-size:100% 28px; background-position:0 16px;
+  border-left:4px solid #e898b0;
+}
+/* Red margin line */
+.letter-paper::before {
+  content:''; position:absolute;
+  left:48px; top:0; bottom:0; width:1px;
+  background:rgba(240,160,184,0.3);
+}
+/* Corner fold */
+.letter-paper::after {
+  content:''; position:absolute;
+  bottom:0; right:0; width:32px; height:32px;
+  background:linear-gradient(135deg,rgba(245,205,214,0.7) 50%, transparent 50%);
+  border-radius:0 0 4px 0;
+}
+/* Lace strip at top of letter */
+.letter-lace-top {
+  position:absolute; top:-10px; left:10px; right:10px; height:20px;
+  background-image:radial-gradient(circle 8px at 8px 100%, transparent 7px, rgba(245,205,214,0.55) 8px, rgba(245,205,214,0.55) 11px, transparent 12px);
+  background-size:16px 20px; background-repeat:repeat-x; pointer-events:none;
+}
+/* Paper behind letter */
+.letter-behind {
+  position:absolute; inset:6px -6px -6px 6px;
+  background:linear-gradient(145deg,#fce8ed,#fdf5f7);
+  border-radius:4px; z-index:-1;
+  box-shadow:4px 4px 14px rgba(180,80,100,0.14);
+}
+
+.letter-date {
+  font-family:'Caveat',cursive; font-size:.9rem;
+  color:#a06070; text-align:right; display:block; margin-bottom:20px;
+}
+.letter-greeting {
+  font-family:'Satisfy',cursive; font-size:1.9rem;
+  color:#8b4055; margin-bottom:18px;
+}
+.letter-body {
+  font-family:'Kalam',cursive; font-size:1.02rem;
+  color:#5a3040; line-height:1.95; margin-bottom:14px;
+}
+.letter-sign-off {
+  font-family:'Caveat',cursive; font-size:1.05rem; color:#7a5060; margin-top:22px;
+}
+.letter-signature {
+  font-family:'Satisfy',cursive; font-size:2rem; color:#8b4055; margin-top:6px;
+}
+.letter-deco-row {
+  text-align:center; margin-top:18px; font-size:1rem;
+  letter-spacing:.5rem; opacity:.45;
+}
+
+/* ── Back home wrap ── */
+.back-home-wrap { margin-top:32px; text-align:center; }
+
+/* ── Music controls ── */
+.music-controls {
+  position:fixed; bottom:22px; right:20px; z-index:100;
+  display:flex; align-items:center; gap:10px;
+  background:#fff; border-radius:40px; padding:9px 16px;
+  box-shadow:0 4px 18px rgba(212,116,138,0.22);
+  border:1.5px solid rgba(245,205,214,0.8);
+}
+.music-label { font-family:'Indie Flower',cursive; font-size:.82rem; color:#a06070; }
+.btn-music {
+  background:linear-gradient(135deg,#f5c0d0,#e898b0);
+  border:none; border-radius:50%; width:36px; height:36px;
+  font-size:1rem; cursor:pointer; display:flex; align-items:center; justify-content:center;
+  transition:transform .2s ease; box-shadow:0 2px 8px rgba(212,116,138,0.3);
+}
+.btn-music:hover { transform:scale(1.12); }
+
+@media(max-width:560px) {
+  .letter-paper { padding:32px 18px 26px; }
+  .letter-paper::before { display:none; }
+  .env-outer { width:260px; }
+}
+</style>
+
+<!-- ══ Page transition ══ -->
+<div id="page-transition"></div>
+<!-- ══ Floating hearts ══ -->
+<div class="hearts-container" aria-hidden="true"></div>
+
+<!-- ══ Fixed ambient bg decorations ══ -->
+<div aria-hidden="true" style="position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden;">
+  <span style="position:absolute;top:7%;left:3%;font-size:1.6rem;opacity:.09;animation:gentleFloat 5s ease-in-out infinite;">🌹</span>
+  <span style="position:absolute;top:22%;right:4%;font-size:1.3rem;opacity:.09;animation:gentleFloat 4s ease-in-out infinite 1s;">🌸</span>
+  <span style="position:absolute;top:52%;left:2%;font-size:1.5rem;opacity:.08;animation:gentleFloat 6s ease-in-out infinite 2s;">🎀</span>
+  <span style="position:absolute;top:68%;right:3%;font-size:1.4rem;opacity:.09;animation:gentleFloat 4.5s ease-in-out infinite .5s;">💗</span>
+  <span style="position:absolute;top:85%;left:5%;font-size:1.2rem;opacity:.08;animation:gentleFloat 3.5s ease-in-out infinite 1.5s;">✨</span>
+  <span style="position:absolute;top:38%;right:2%;font-size:1.6rem;opacity:.07;animation:gentleFloat 5.5s ease-in-out infinite 3s;">🌷</span>
+</div>
+
+<!-- ══ Top lace ══ -->
+<div class="final-lace-top" aria-hidden="true"></div>
+
+<div class="final-stage" id="main-content">
+
+  <!-- ════════════ TITLE ════════════ -->
+  <div class="final-title-block" data-anim="fade">
+
+    <!-- CSS rose bouquet above title -->
+    <div aria-hidden="true" style="display:flex;justify-content:center;align-items:flex-end;gap:6px;margin-bottom:10px;">
+      <div class="css-rose rose-sm" style="transform:rotate(-20deg);opacity:.8;">
+        <div class="petal"></div><div class="petal"></div><div class="petal"></div><div class="petal"></div><div class="petal"></div><div class="leaf"></div>
+      </div>
+      <div class="css-rose rose-lg">
+        <div class="petal"></div><div class="petal"></div><div class="petal"></div><div class="petal"></div><div class="petal"></div><div class="leaf"></div>
+      </div>
+      <div class="bow-satin bow-lg" style="margin-bottom:4px;">
+        <div class="bow-knot"></div><div class="bow-tail-l"></div><div class="bow-tail-r"></div>
+      </div>
+      <div class="css-rose rose-lg">
+        <div class="petal"></div><div class="petal"></div><div class="petal"></div><div class="petal"></div><div class="petal"></div><div class="leaf"></div>
+      </div>
+      <div class="css-rose rose-sm" style="transform:rotate(18deg);opacity:.8;">
+        <div class="petal"></div><div class="petal"></div><div class="petal"></div><div class="petal"></div><div class="petal"></div><div class="leaf"></div>
+      </div>
+    </div>
+
+    <span class="pre-line">✦ sealed with love, opened with joy ✦</span>
+    <h1>A Letter For You</h1>
+    <span class="post-line">🌹 a special birthday message 🌹</span>
+
+    <!-- Lace strip under title -->
+    <div class="lace-strip" style="margin-top:12px;max-width:340px;margin-left:auto;margin-right:auto;" aria-hidden="true"></div>
+  </div>
+
+  <!-- ════════════ ENVELOPE ════════════ -->
+  <div class="env-outer" role="button" tabindex="0"
+       aria-label="Click to open the birthday letter"
+       data-anim="pop" data-delay="200">
+
+    <!-- Lace border halo -->
+    <div class="env-lace-border" aria-hidden="true"></div>
+
+    <!-- Washi tape ribbons across envelope -->
+    <div class="env-ribbon washi-floral" aria-hidden="true"
+         style="width:72px;top:28%;left:-14px;transform:rotate(-90deg);"></div>
+    <div class="env-ribbon washi-hearts" aria-hidden="true"
+         style="width:68px;top:28%;right:-12px;transform:rotate(90deg);"></div>
+
+    <!-- Top horizontal washi strip -->
+    <div class="washi washi-gingham" aria-hidden="true"
+         style="width:80px;top:-9px;left:50%;transform:translateX(-50%) rotate(-2deg);
+         background-image:repeating-linear-gradient(0deg,transparent,transparent 4px,rgba(212,116,138,0.3) 4px,rgba(212,116,138,0.3) 5px),
+         repeating-linear-gradient(90deg,transparent,transparent 4px,rgba(212,116,138,0.3) 4px,rgba(212,116,138,0.3) 5px);
+         background-color:rgba(253,232,237,0.9);"></div>
+    <div class="washi washi-hearts" aria-hidden="true"
+         style="width:60px;bottom:-9px;left:50%;transform:translateX(-50%) rotate(1deg);"></div>
+
+    <!-- CSS Rose corners -->
+    <div class="env-rose-tl" aria-hidden="true">
+      <div class="css-rose rose-sm" style="opacity:.85;">
+        <div class="petal"></div><div class="petal"></div><div class="petal"></div><div class="petal"></div><div class="petal"></div><div class="leaf"></div>
+      </div>
+    </div>
+    <div class="env-rose-tr" aria-hidden="true">
+      <div class="css-rose rose-sm" style="opacity:.85;">
+        <div class="petal"></div><div class="petal"></div><div class="petal"></div><div class="petal"></div><div class="petal"></div><div class="leaf"></div>
+      </div>
+    </div>
+    <div class="env-rose-bl" aria-hidden="true">
+      <div class="css-rose" style="transform:scale(.5);opacity:.7;">
+        <div class="petal"></div><div class="petal"></div><div class="petal"></div><div class="petal"></div><div class="petal"></div><div class="leaf"></div>
+      </div>
+    </div>
+    <div class="env-rose-br" aria-hidden="true">
+      <div class="css-butterfly butterfly-sm" style="opacity:.6;">
+        <div class="wing wing-ul"></div><div class="wing wing-ur"></div>
+        <div class="wing wing-ll"></div><div class="wing wing-lr"></div>
+        <div class="body"></div>
+      </div>
+    </div>
+
+    <!-- Envelope body -->
+    <div class="envelope" aria-hidden="true">
+      <div class="env-body"></div>
+      <div class="env-bottom"></div>
+      <div class="env-flap"></div>
+
+      <!-- Rose wax seal on flap -->
+      <div class="env-seal">
+        <div class="wax-seal seal-lg">🌹</div>
+      </div>
+
+      <div class="env-letter-peek"></div>
+    </div>
+
+    <p class="env-hint">↑ click the envelope to open it ↑</p>
+    <p style="text-align:center;font-family:'Indie Flower',cursive;font-size:.75rem;color:#a06070;opacity:.45;margin-top:2px;">( or press Enter / Space )</p>
+  </div>
+
+
+  <!-- ════════════ LETTER ════════════ -->
+  <div class="letter-container" aria-live="polite" aria-atomic="true">
+    <div class="letter-paper">
+
+      <!-- Paper behind -->
+      <div class="letter-behind" aria-hidden="true"></div>
+      <!-- Lace at top of letter -->
+      <div class="letter-lace-top" aria-hidden="true"></div>
+
+      <!-- Washi strips on letter -->
+      <div class="washi washi-floral" aria-hidden="true"
+           style="width:75px;top:-9px;left:50%;transform:translateX(-50%) rotate(-3deg);"></div>
+      <div class="washi washi-gingham" aria-hidden="true"
+           style="width:52px;top:-9px;left:12%;transform:rotate(4deg);
+           background-image:repeating-linear-gradient(0deg,transparent,transparent 4px,rgba(212,116,138,0.3) 4px,rgba(212,116,138,0.3) 5px),
+           repeating-linear-gradient(90deg,transparent,transparent 4px,rgba(212,116,138,0.3) 4px,rgba(212,116,138,0.3) 5px);
+           background-color:rgba(253,232,237,0.9);"></div>
+      <div class="washi washi-hearts" aria-hidden="true"
+           style="width:48px;top:-9px;right:14%;transform:rotate(-4deg);"></div>
+
+      <!-- Sticker decorations on letter corners -->
+      <div style="position:absolute;top:14px;right:16px;transform:rotate(12deg);" aria-hidden="true">
+        <div class="css-rose rose-sm">
+          <div class="petal"></div><div class="petal"></div><div class="petal"></div><div class="petal"></div><div class="petal"></div><div class="leaf"></div>
+        </div>
+      </div>
+      <div style="position:absolute;top:14px;left:16px;transform:rotate(-10deg);" aria-hidden="true">
+        <div class="bow-satin bow-sm">
+          <div class="bow-knot"></div><div class="bow-tail-l"></div><div class="bow-tail-r"></div>
+        </div>
+      </div>
+      <div style="position:absolute;bottom:40px;right:18px;" aria-hidden="true">
+        <div class="wax-seal seal-sm">🌸</div>
+      </div>
+      <div style="position:absolute;bottom:40px;left:16px;transform:rotate(-8deg);font-size:1.1rem;opacity:.35;" aria-hidden="true">🦋</div>
+
+      <!-- Gift tag pinned at top -->
+      <div style="position:absolute;top:-28px;right:18%;transform:rotate(5deg);" aria-hidden="true">
+        <div class="gift-tag" style="padding:5px 10px;font-size:.65rem;">
+          <span style="font-family:'Indie Flower',cursive;color:#8b4055;">a letter</span>
+          <span style="display:block;font-family:'Satisfy',cursive;font-size:.85rem;color:#8b4055;">for you 💗</span>
+        </div>
+      </div>
+
+      <!-- Letter content -->
+      <span class="letter-date">August 5th, 2026 🌸</span>
+      <p class="letter-greeting">My dearest you,</p>
+
+      <p class="letter-body">
+        I've been thinking about what to say in this letter for a while now.
+        Not because I don't have enough words — it's actually the opposite.
+        There are too many, and none of them feel big enough.
+      </p>
+      <p class="letter-body">
+        So let me start with the simplest truth I know: having you in my
+        life is one of the best things that has ever happened to me. Not
+        just on birthdays, not just in the big shiny moments — but in all
+        the quiet, ordinary, everyday ones too.
+      </p>
+      <p class="letter-body">
+        You make the world a gentler, warmer, funnier, more beautiful place
+        just by being in it. You carry kindness like other people carry
+        keys — always with you, always ready, never making a show of it.
+        That's rare. <em>You</em> are rare.
+      </p>
+      <p class="letter-body">
+        I hope this year brings you everything your heart has been softly
+        wishing for. Moonlit moments, belly laughs, spontaneous adventures,
+        and long peaceful evenings where everything feels exactly right. 🌸
+      </p>
+      <p class="letter-body">
+        And on the days when things feel heavy — because sometimes they
+        will — I hope you remember that you are so deeply loved. That
+        somewhere, someone made you a whole scrapbook just to say:
+        <strong>you matter. You are celebrated. You are everything.</strong>
+      </p>
+      <p class="letter-body">
+        Happy Birthday. Here's to you — today, tomorrow, and every
+        single day in between. 🎂✨🌹
+      </p>
+
+      <!-- Quote card inside letter -->
+      <div class="quote-card" style="margin:18px 0 14px;font-size:.88rem;">
+        you are so so so loved ♡
+        <span class="heart-end">🌸</span>
+      </div>
+
+      <!-- Sign-off with rose + bow row -->
+      <p class="letter-sign-off">With all the love in the world,</p>
+      <p class="letter-signature">yours always 💗</p>
+
+      <!-- Decorative bottom row -->
+      <div class="letter-deco-row" aria-hidden="true">🌹 🎀 ✨ 🎂 ✨ 🎀 🌹</div>
+
+      <!-- Lace strip at bottom of letter -->
+      <div class="lace-strip" style="margin-top:14px;" aria-hidden="true"></div>
+
+      <!-- Wax seal row at very bottom -->
+      <div style="display:flex;justify-content:center;gap:16px;margin-top:12px;" aria-hidden="true">
+        <div class="wax-seal seal-sm">🌹</div>
+        <div class="bow-satin" style="transform:scale(.85);">
+          <div class="bow-knot"></div><div class="bow-tail-l"></div><div class="bow-tail-r"></div>
+        </div>
+        <div class="wax-seal seal-sm">💗</div>
+      </div>
+
+    </div><!-- /.letter-paper -->
+  </div><!-- /.letter-container -->
+
+  <!-- ── Back home ── -->
+  <div class="back-home-wrap" id="back-home" style="opacity:0;transition:opacity .6s ease 1.2s;">
+    <div style="display:flex;flex-direction:column;align-items:center;gap:14px;">
+      <!-- CSS rose + bow as a little bouquet above button -->
+      <div style="display:flex;align-items:flex-end;gap:4px;" aria-hidden="true">
+        <div class="css-rose rose-sm" style="transform:rotate(-15deg);opacity:.7;">
+          <div class="petal"></div><div class="petal"></div><div class="petal"></div><div class="petal"></div><div class="petal"></div><div class="leaf"></div>
+        </div>
+        <div class="css-rose" style="opacity:.85;">
+          <div class="petal"></div><div class="petal"></div><div class="petal"></div><div class="petal"></div><div class="petal"></div><div class="leaf"></div>
+        </div>
+        <div class="css-rose rose-sm" style="transform:rotate(12deg);opacity:.7;">
+          <div class="petal"></div><div class="petal"></div><div class="petal"></div><div class="petal"></div><div class="petal"></div><div class="leaf"></div>
+        </div>
+      </div>
+      <a href="../index.html" class="btn-bow">← back to the scrapbook</a>
+    </div>
+  </div>
+
+</div><!-- /.final-stage -->
+
+<!-- ── Footer ── -->
+<div class="final-lace-bot" aria-hidden="true"></div>
+<div style="text-align:center;padding:16px 20px 28px;background:linear-gradient(90deg,#fce8ed,#fdf6ee,#fce8ed);
+  border-top:1px dashed rgba(212,116,138,0.18);">
+  <p style="font-family:'Indie Flower',cursive;font-size:.88rem;color:#a06070;">
+    made with 💗 just for you &nbsp;·&nbsp; 🌹 🎀 ✨
+  </p>
+</div>
+
+<!-- ── Music controls ── -->
+<div class="music-controls" role="region" aria-label="Background music controls">
+  <span class="music-label">🎵 birthday song</span>
+  <span class="music-note" style="animation:musicBounce .6s ease-in-out infinite alternate;" aria-hidden="true">🎶</span>
+  <button class="btn-music" aria-label="Play or pause background music">▶</button>
+</div>
+
+
+<!-- ══ Scripts ══ -->
+<script src="../js/utils.js"></script>
+<script src="../js/animations.js"></script>
+<script src="../js/transitions.js"></script>
+<script src="../js/confetti.js"></script>
+<script src="../js/final.js"></script>
+
+<script>
+  /* ── Bootstrap ── */
+  document.addEventListener('DOMContentLoaded', () => {
+    ScrapAnimations.initFloatingHearts('.hearts-container', 14);
+    ScrapAnimations.initSparkles(true);
+    ScrapAnimations.initCursorTrail();
+    ScrapAnimations.initBgDecos(4);
+    ScrapAnimations.initEntranceAnims();
+    ScrapAnimations.initStickerHover();
+    ScrapTransitions.initTransitions();
+  });
+
+  /* ── Keyboard: Enter / Space opens envelope ── */
+  document.addEventListener('DOMContentLoaded', () => {
+    const envWrap = document.querySelector('.env-outer');
+    if (envWrap) {
+      envWrap.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          envWrap.click();
+        }
+      });
+    }
+
+    /* Show back-home button after letter revealed */
+    const letterContainer = document.querySelector('.letter-container');
+    const backHome        = document.getElementById('back-home');
+    if (letterContainer && backHome) {
+      const obs = new MutationObserver(() => {
+        if (letterContainer.classList.contains('revealed')) {
+          setTimeout(() => { backHome.style.opacity = '1'; }, 1400);
+        }
+      });
+      obs.observe(letterContainer, { attributes: true, attributeFilter: ['class'] });
+    }
+  });
+
+  /* ── Override envelope selector for new class name ── */
+  /* final.js uses '.envelope-wrap', patch to '.env-outer' */
+  document.addEventListener('DOMContentLoaded', () => {
+    const envOuter = document.querySelector('.env-outer');
+    const letterContainer = document.querySelector('.letter-container');
+    const hintText  = document.querySelector('.env-hint');
+    let opened = false;
+
+    if (!envOuter || !letterContainer) return;
+
+    envOuter.addEventListener('click', () => {
+      if (opened) return;
+      opened = true;
+
+      envOuter.classList.add('open');
+      if (hintText) hintText.style.opacity = '0';
+
+      setTimeout(() => letterContainer.classList.add('revealed'), 500);
+
+      setTimeout(() => {
+        ScrapConfetti.launchConfetti(160);
+        ScrapConfetti.startConfettiDrizzle(550);
+      }, 720);
+
+      setTimeout(() => ScrapConfetti.stopConfettiDrizzle(), 9000);
+
+      setTimeout(() => {
+        envOuter.style.transform = 'scale(0.88) translateY(-8px)';
+        envOuter.style.transition = 'transform .5s ease';
+        envOuter.style.cursor = 'default';
+      }, 950);
+    });
+  });
+</script>
+
+</body>
+</html>
