@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>Happy Birthday, Anin!!</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;600;700&family=Satisfy&family=Indie+Flower&family=Kalam:wght@300;400;700&family=Shadows+Into+Light&family=Patrick+Hand&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="../css/scrapbook-gen.css"/>
+  <style>
+    /* ── Page shell ── */
+    .final-stage {
+      display:flex; flex-direction:column; align-items:center;
+      padding:36px 20px 60px; min-height:80vh;
+      position:relative; z-index:1;
+    }
+
+    /* ── Title block ── */
+    .final-title-block { text-align:center; margin-bottom:36px; position:relative; }
+    .final-title-block h1 {
+      font-family:var(--f-title);
+      font-size:clamp(2.2rem,6.5vw,4.2rem);
+      color:#8b4055;
+      text-shadow:2px 3px 0 rgba(245,192,208,.75);
+      line-height:1.08;
+    }
+    .final-pre  { font-family:var(--f-shadow); font-size:.95rem; color:#a06070; letter-spacing:.16em; opacity:.72; display:block; margin-bottom:6px; }
+    .final-post { font-family:var(--f-cute);   font-size:.84rem; color:#a06070; letter-spacing:.1em;  opacity:.6;  display:block; margin-top:8px; }
+
+    /* ── Envelope corner flower decorations ── */
+    .env-corner {
+      position:absolute; pointer-events:none; z-index:6;
+    }
+    .env-corner.tl { top:-18px; left:-14px;  transform:rotate(-22deg); }
+    .env-corner.tr { top:-16px; right:-12px; transform:rotate(18deg); }
+    .env-corner.bl { bottom:-14px; left:-10px; transform:rotate(12deg); }
+    .env-corner.br { bottom:-12px; right:-8px;  transform:rotate(-18deg); }
+
+    /* ── Envelope lace border ── */
+    .env-lace-border {
+      position:absolute; inset:-12px; border-radius:10px; pointer-events:none; z-index:0;
+      background-image:
+        radial-gradient(circle 5px at 5px 5px, transparent 4px, rgba(245,205,214,.5) 5px, rgba(245,205,214,.5) 7px, transparent 8px),
+        radial-gradient(circle 5px at calc(100% - 5px) 5px, transparent 4px, rgba(245,205,214,.5) 5px, rgba(245,205,214,.5) 7px, transparent 8px);
+      background-size:13px 13px; background-repeat:repeat; opacity:.5;
+    }
+
+    /* ── Letter container reveal ── */
+    .letter-container {
+      max-width:600px; width:92vw;
+      max-height:0; overflow:hidden; opacity:0;
+      transition:max-height 1s cubic-bezier(.4,0,.2,1), margin-top .5s ease, opacity .7s ease;
+    }
+    .letter-container.revealed { max-height:2400px; margin-top:44px; opacity:1; }
+
+    /* ── Letter paper ── */
+    .letter-paper {
+      background:#fffdf9; border-radius:4px;
+      padding:48px 44px 40px;
+      box-shadow:0 8px 36px rgba(180,80,100,.18), 0 2px 8px rgba(0,0,0,.06);
+      position:relative; isolation:isolate;
+      background-image:repeating-linear-gradient(
+        transparent, transparent 27px,
+        rgba(212,116,138,.085) 27px, rgba(212,116,138,.085) 28px);
+      background-size:100% 28px; background-position:0 16px;
+      border-left:4px solid #e898b0;
+    }
+    /* Red margin line */
+    .letter-paper::before {
+      content:''; position:absolute; left:44px; top:0; bottom:0;
+      width:1px; background:rgba(240,160,184,.26); pointer-events:none;
+    }
+    /* Corner fold */
+    .letter-paper::after {
+      content:''; position:absolute; bottom:0; right:0;
+      width:28px; height:28px;
+      background:linear-gradient(135deg, rgba(245,205,214,.6) 50%, transparent 50%);
+      border-radius:0 0 4px 0; pointer-events:none;
+    }
+    .letter-behind {
+      position:absolute; inset:6px -6px -6px 6px;
+      background:linear-gradient(145deg,#fce8ed,#fdf5f7);
+      border-radius:4px; z-index:-1;
+      box-shadow:4px 4px 14px rgba(180,80,100,.14);
+    }
+
+    /* ── Letter typography ── */
+    .letter-date      { font-family:var(--f-hand); font-size:.9rem; color:#a06070; text-align:right; display:block; margin-bottom:20px; position:relative; z-index:1; }
+    .letter-greeting  { font-family:var(--f-title); font-size:1.85rem; color:#8b4055; margin-bottom:18px; position:relative; z-index:1; }
+    .letter-body      { font-family:var(--f-journal); font-size:.98rem; color:#5a3040; line-height:2; margin-bottom:14px; position:relative; z-index:1; }
+    .letter-sign-off  { font-family:var(--f-hand); font-size:1rem; color:#7a5060; margin-top:24px; position:relative; z-index:1; }
+    .letter-signature { font-family:var(--f-title); font-size:1.9rem; color:#8b4055; margin-top:6px; position:relative; z-index:1; }
+    .letter-deco-row  { text-align:center; margin-top:16px; opacity:.38; position:relative; z-index:1; }
+    #letter-body-paragraphs { position:relative; z-index:1; }
+
+    /* ── Closing quote strip ── */
+    .letter-quote {
+      margin:20px 0 16px; padding:12px 16px;
+      border-left:3px solid rgba(196,122,138,.5);
+      background:var(--r-petal); border-radius:0 6px 6px 0;
+      font-family:var(--f-cute); font-size:.9rem; color:var(--r-ink);
+      line-height:1.55; position:relative; z-index:1;
+    }
+
+    /* ── Corner decorations inside letter paper — small, non-intrusive ── */
+    .ltr-deco {
+      position:absolute; pointer-events:none; z-index:0; opacity:.45;
+    }
+    .ltr-deco.tr { top:10px; right:10px; transform:rotate(10deg); }
+    .ltr-deco.tl { top:10px; left:10px;  transform:rotate(-10deg); }
+    .ltr-deco.br { bottom:44px; right:12px; }
+    .ltr-deco.bl { bottom:44px; left:12px; transform:rotate(-6deg); opacity:.35; }
+
+    /* ── Bottom decoration row in letter ── */
+    .letter-bot-row {
+      display:flex; justify-content:center; align-items:center;
+      gap:14px; margin-top:14px; position:relative; z-index:1;
+    }
+
+    /* ── Back home ── */
+    .back-home-wrap { margin-top:32px; text-align:center; opacity:0; transition:opacity .6s ease 1.2s; }
+    .back-home-wrap.show { opacity:1; }
+    .back-home-decos { display:flex; justify-content:center; align-items:flex-end; gap:6px; margin-bottom:12px; }
+
+    /* ── Responsive ── */
+    @media(max-width:520px) {
+      .letter-paper { padding:32px 18px 28px; }
+      .letter-paper::before { display:none; }
+      .ltr-deco { display:none; }
+    }
+  </style>
+</head>
+<body>
+<div id="page-transition"></div>
+<div class="hearts-container" aria-hidden="true"></div>
+
+<div class="page-bg">
+  <div class="lace-band" aria-hidden="true"></div>
+
+  <div class="page-wrapper">
+    <div class="final-stage" id="main-content">
+
+      <!-- ════════════ TITLE ════════════ -->
+      <div class="final-title-block" data-anim="fade">
+        <!-- Flower + bow row above title -->
+        <div style="display:flex;justify-content:center;align-items:flex-end;gap:8px;margin-bottom:12px;" aria-hidden="true">
+          <div id="title-fl-l" style="transform:rotate(-18deg);"></div>
+          <div id="title-bow-c" style="margin-bottom:2px;"></div>
+          <div id="title-fl-r" style="transform:rotate(16deg);"></div>
+        </div>
+
+        <span class="final-pre">&#10022; sealed with love, opened with joy &#10022;</span>
+        <h1 id="letter-title">Happy Birthday, Anin!!</h1>
+        <p style="font-family:var(--f-cute);font-size:.88rem;color:#a06070;margin-top:6px;opacity:.6;">
+          for <strong id="letter-recipient">Anin</strong> &mdash; with so much love
+        </p>
+        <span class="final-post">a special birthday message, just for you</span>
+
+        <div class="lace-strip" style="margin-top:12px;max-width:320px;margin-left:auto;margin-right:auto;" aria-hidden="true"></div>
+      </div>
+
+      <!-- ════════════ ENVELOPE ════════════ -->
+      <div class="env-outer" role="button" tabindex="0"
+           aria-label="Click to open the birthday letter"
+           data-anim="pop" data-delay="200">
+
+        <div class="env-lace-border" aria-hidden="true"></div>
+
+        <!-- Washi tape strips — only on envelope edges, not over face -->
+        <div class="washi washi-gingham" style="width:72px;top:-9px;left:50%;transform:translateX(-50%) rotate(-2deg);" aria-hidden="true"></div>
+        <div class="washi washi-hearts"  style="width:54px;bottom:-9px;left:50%;transform:translateX(-50%) rotate(1deg);" aria-hidden="true"></div>
+        <div class="washi washi-rose"    style="width:60px;top:32%;left:-10px;transform:rotate(-90deg);" aria-hidden="true"></div>
+        <div class="washi washi-floral"  style="width:58px;top:32%;right:-10px;transform:rotate(90deg);" aria-hidden="true"></div>
+
+        <!-- Corner flower/asset stickers — outside envelope body -->
+        <div class="env-corner tl" id="env-fl-tl" aria-hidden="true"></div>
+        <div class="env-corner tr" id="env-fl-tr" aria-hidden="true"></div>
+        <div class="env-corner bl" id="env-fl-bl" aria-hidden="true"></div>
+        <div class="env-corner br" id="env-fl-br" aria-hidden="true"></div>
+
+        <!-- Envelope CSS shape -->
+        <div class="envelope" aria-hidden="true">
+          <div class="env-body"></div>
+          <div class="env-bottom"></div>
+          <div class="env-flap"></div>
+          <!-- Wax seal on flap -->
+          <div class="env-seal" id="env-seal"></div>
+          <div class="env-letter-peek"></div>
+        </div>
+
+        <p class="env-hint">&#8593; click the envelope to open it &#8593;</p>
+        <p style="text-align:center;font-family:var(--f-cute);font-size:.72rem;color:#a06070;opacity:.38;margin-top:2px;">( press Enter or Space )</p>
+      </div>
+
+      <!-- ════════════ LETTER ════════════ -->
+      <div class="letter-container" id="letter-container" aria-live="polite" aria-atomic="true">
+        <div class="letter-paper">
+          <div class="letter-behind" aria-hidden="true"></div>
+
+          <!-- Washi tape on letter top edge -->
+          <div class="washi washi-floral"  style="width:66px;top:-9px;left:50%;transform:translateX(-50%) rotate(-3deg);"  aria-hidden="true"></div>
+          <div class="washi washi-gingham" style="width:46px;top:-9px;left:10%;transform:rotate(4deg);"   aria-hidden="true"></div>
+          <div class="washi washi-hearts"  style="width:42px;top:-9px;right:12%;transform:rotate(-4deg);" aria-hidden="true"></div>
+
+          <!-- Corner asset decorations — small, z-index:0, won't cover text -->
+          <div class="ltr-deco tr" id="ltr-fl-tr" aria-hidden="true"></div>
+          <div class="ltr-deco tl" id="ltr-bow-tl" aria-hidden="true"></div>
+          <div class="ltr-deco br" id="ltr-seal-br" aria-hidden="true"></div>
+          <div class="ltr-deco bl" id="ltr-bfly-bl" aria-hidden="true"></div>
+
+          <!-- Gift tag pinned top -->
+          <div style="position:absolute;top:-26px;right:16%;transform:rotate(4deg);z-index:2;" aria-hidden="true">
+            <div class="gift-tag" style="padding:5px 10px;font-size:.62rem;">
+              <span style="font-family:var(--f-cute);color:#8b4055;">a letter</span>
+              <span style="display:block;font-family:var(--f-title);font-size:.82rem;color:#8b4055;">for Anin &#9825;</span>
+            </div>
+          </div>
+
+          <!-- ── LETTER CONTENT ── -->
+          <span class="letter-date" id="letter-date"></span>
+          <p class="letter-greeting" id="letter-greeting">My Dearest Twin,</p>
+
+          <div id="letter-body-paragraphs">
+            <!-- Populated by JS -->
+          </div>
+
+          <!-- Closing quote -->
+          <div class="letter-quote">You are so, so, so loved. &#9825;</div>
+
+          <p class="letter-sign-off">With all the love in the world,</p>
+          <p class="letter-signature" id="letter-signature">your twin &#9825;</p>
+
+          <!-- Asset deco row -->
+          <div class="letter-deco-row" aria-hidden="true">
+            <div id="ltr-deco-row" style="display:flex;justify-content:center;align-items:center;gap:12px;margin:10px 0 4px;"></div>
+          </div>
+
+          <div class="lace-strip" style="margin-top:14px;" aria-hidden="true"></div>
+
+          <!-- Bottom seal + bow row -->
+          <div class="letter-bot-row" aria-hidden="true">
+            <div id="ltr-bot-seal-l"></div>
+            <div id="ltr-bot-bow"></div>
+            <div id="ltr-bot-seal-r"></div>
+          </div>
+        </div><!-- /.letter-paper -->
+      </div><!-- /.letter-container -->
+
+      <!-- ── Back to scrapbook ── -->
+      <div class="back-home-wrap" id="back-home">
+        <div class="back-home-decos" aria-hidden="true">
+          <div id="back-fl-l" style="transform:rotate(-14deg);opacity:.72;"></div>
+          <div id="back-fl-c" style="opacity:.85;"></div>
+          <div id="back-fl-r" style="transform:rotate(12deg);opacity:.72;"></div>
+        </div>
+        <a href="preview.html" class="btn-bow">&#8592; back to the scrapbook</a>
+      </div>
+
+    </div><!-- /.final-stage -->
+  </div><!-- /.page-wrapper -->
+
+  <div class="lace-band flip" style="margin-top:8px;" aria-hidden="true"></div>
+  <footer class="footer-bar" role="contentinfo">
+    <p>Handcrafted with &#9825; by <a href="https://github.com/pizzyboo" target="_blank" rel="noopener">pizzyboo</a></p>
+  </footer>
+</div><!-- /.page-bg -->
+
+<!-- Music player -->
+<div class="music-player" id="music-player" role="region" aria-label="Background music controls" style="display:none;">
+  <span class="music-label" id="music-label">birthday song</span>
+  <span class="music-note-anim" aria-hidden="true" style="font-size:1rem;">&#9835;</span>
+  <button class="btn-music" id="btn-music" aria-label="Play or pause background music">&#9654;</button>
+</div>
+
+<script src="../js/svgs.js"></script>
+<script src="../js/animations.js"></script>
+<script src="../js/data-seed.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+
+  /* ─────────────────────────────────────────────
+     1. LETTER PARAGRAPHS  — hardcoded for Anin
+  ───────────────────────────────────────────── */
+  const LETTER_PARAGRAPHS = [
+    `First of all, happy birthday to you!`,
+    `I'm sorry that I can't be with you on your special day, but I hope this little website can make you smile. This is actually the first project I've ever made for someone, so please forgive me if it's far from perfect. I really hope you like it.`,
+    `I don't have an expensive gift for you right now (sorry, sis \uD83D\uDE2D), so for the moment all I can give you are my words and my prayers.`,
+    `I'm truly, truly grateful that we became friends. You're such a kind, thoughtful, and beautiful person, and I'm really thankful to have you in my life.`,
+    `As you grow another year older, I hope you're always surrounded by kind people who genuinely care about you. I hope your wishes slowly come true, your dreams become reality one by one, and that you continue growing into an even happier and stronger person. Most importantly, I pray that you're always blessed with good health, endless happiness, and abundant opportunities in everything you do.`,
+    `Huff... I'm not very good at putting my feelings into words, so I don't really know what else to say.`,
+    `But one thing I'll always mean is this:`,
+    `Happy Birthday, my twin.`,
+    `I hope our friendship lasts for a very, very long time, and that happiness always finds its way to you.`,
+    `Enjoy your special day.`,
+    `You truly deserve all the love and happiness in the world.`,
+  ];
+
+  const today  = new Date();
+  const MONTHS = ['January','February','March','April','May','June',
+                  'July','August','September','October','November','December'];
+
+  /* Set date */
+  const dateEl = document.getElementById('letter-date');
+  if (dateEl) dateEl.textContent = `${MONTHS[today.getMonth()]} ${today.getDate()}, ${today.getFullYear()}`;
+
+  /* Populate body paragraphs */
+  const bodyDiv = document.getElementById('letter-body-paragraphs');
+  if (bodyDiv) {
+    bodyDiv.innerHTML = '';
+    LETTER_PARAGRAPHS.forEach(text => {
+      if (!text.trim()) return;
+      const p = document.createElement('p');
+      p.className = 'letter-body';
+      p.textContent = text;
+      bodyDiv.appendChild(p);
+    });
+  }
+
+  /* ─────────────────────────────────────────────
+     2. INJECT ASSET DECORATIONS
+  ───────────────────────────────────────────── */
+  const inj = (id, html) => { const el = document.getElementById(id); if (el) el.innerHTML = html; };
+
+  /* Title row */
+  inj('title-fl-l',   SVG.flower(40));
+  inj('title-bow-c',  SVG.bow(78));
+  inj('title-fl-r',   SVG.flower(40));
+
+  /* Envelope corners — flower2 (smaller, offset to outside of envelope body) */
+  inj('env-fl-tl', SVG.flower2(24));
+  inj('env-fl-tr', SVG.flower2(22));
+  inj('env-fl-bl', SVG.heartLace(20));
+  inj('env-fl-br', SVG.butterfly(32));
+
+  /* Wax seal on envelope flap — use wax-seal asset */
+  inj('env-seal', SVG.waxSeal(42));
+
+  /* Letter corner decos — kept tiny so text is never covered */
+  inj('ltr-fl-tr',   SVG.flower2(22));
+  inj('ltr-bow-tl',  SVG.bow(38));
+  inj('ltr-seal-br', SVG.waxSeal(22));
+  inj('ltr-bfly-bl', SVG.butterfly(26));
+
+  /* Letter deco row — letter.png asset as central icon */
+  const decoRow = document.getElementById('ltr-deco-row');
+  if (decoRow) {
+    decoRow.innerHTML =
+      SVG.flower2(22) +
+      `<img src="../assets/letter.png" width="36" height="36"
+        alt="" aria-hidden="true" draggable="false"
+        style="object-fit:contain;filter:drop-shadow(0 2px 5px rgba(100,40,60,.2));margin:0 6px;">` +
+      SVG.flower2(22);
+  }
+
+  /* Letter bottom row */
+  inj('ltr-bot-seal-l', SVG.waxSeal(28));
+  inj('ltr-bot-bow',    SVG.bow(60));
+  inj('ltr-bot-seal-r', SVG.heart(26));
+
+  /* Back home row */
+  inj('back-fl-l', SVG.flower2(24));
+  inj('back-fl-c', SVG.flower(36));
+  inj('back-fl-r', SVG.flower2(24));
+
+  /* ─────────────────────────────────────────────
+     3. ENVELOPE OPEN INTERACTION  — unchanged
+  ───────────────────────────────────────────── */
+  const envOuter        = document.querySelector('.env-outer');
+  const letterContainer = document.getElementById('letter-container');
+  const hintText        = document.querySelector('.env-hint');
+  const backHome        = document.getElementById('back-home');
+  let opened = false;
+
+  function openEnvelope() {
+    if (opened) return;
+    opened = true;
+
+    envOuter.classList.add('open');
+    if (hintText) { hintText.style.opacity = '0'; hintText.style.transition = 'opacity .3s'; }
+
+    setTimeout(() => { letterContainer.classList.add('revealed'); }, 500);
+
+    setTimeout(() => {
+      ScrapConfetti.launchBurst(150);
+      ScrapConfetti.startDrizzle(500);
+    }, 720);
+    setTimeout(() => ScrapConfetti.stopDrizzle(), 9000);
+
+    setTimeout(() => {
+      envOuter.style.transform = 'scale(.88) translateY(-8px)';
+      envOuter.style.transition = 'transform .5s ease';
+      envOuter.style.cursor     = 'default';
+    }, 950);
+
+    setTimeout(() => { if (backHome) backHome.classList.add('show'); }, 1800);
+  }
+
+  envOuter.addEventListener('click', openEnvelope);
+  envOuter.addEventListener('keydown', e => {
+    if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openEnvelope(); }
+  });
+
+  /* ─────────────────────────────────────────────
+     4. ANIMATIONS
+  ───────────────────────────────────────────── */
+  ScrapAnimations.initFloatingHearts('.hearts-container', 12);
+  ScrapAnimations.initSparkles(true);
+  ScrapAnimations.initCursorTrail();
+  ScrapAnimations.initEntranceAnims();
+  ScrapAnimations.initTransitions();
+  ScrapAnimations.initMusicPlayer();
+});
+</script>
+</body>
+</html>

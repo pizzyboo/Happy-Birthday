@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>Your Scrapbook</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;600;700&family=Satisfy&family=Indie+Flower&family=Kalam:wght@300;400;700&family=Shadows+Into+Light&family=Patrick+Hand&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="../css/scrapbook-gen.css"/>
+  <style>
+    /* ── Hero block ── */
+    .preview-hero { text-align:center; padding:32px 16px 16px; position:relative; }
+    .preview-hero-inner {
+      display:inline-block; position:relative;
+      background:#fff; padding:32px 52px 28px; border-radius:3px;
+      box-shadow:0 6px 28px rgba(180,80,100,.18),0 2px 8px rgba(0,0,0,.06);
+    }
+    .preview-hero-inner::before {
+      content:''; position:absolute; inset:0; border-radius:3px;
+      background-image:
+        radial-gradient(ellipse 5px 4px at 14px 14px,rgba(196,122,138,.09) 55%,transparent 70%),
+        radial-gradient(ellipse 3px 3px at 40px 38px,rgba(196,122,138,.07) 55%,transparent 70%);
+      background-size:48px 48px; pointer-events:none;
+    }
+    .preview-title { font-family:var(--f-title); font-size:clamp(2.4rem,6vw,4.4rem); color:#8b4055; text-shadow:2px 3px 0 rgba(245,192,208,.8); line-height:1.05; position:relative; z-index:1; }
+    .preview-sub   { font-family:var(--f-shadow); font-size:clamp(.9rem,2vw,1.15rem); color:#a06070; letter-spacing:.08em; margin-top:8px; position:relative; z-index:1; }
+    .preview-invite { font-family:var(--f-journal); font-size:.98rem; color:#7a5060; line-height:1.75; margin:12px auto 0; max-width:360px; position:relative; z-index:1; }
+
+    /* ── Polaroid photo placeholder ── */
+    .pol-placeholder { width:100%; aspect-ratio:1; background:var(--r-blush); display:flex; flex-direction:column; align-items:center; justify-content:center; gap:8px; }
+    .pol-placeholder .ph-text { font-family:var(--f-cute); font-size:.72rem; color:rgba(139,64,85,.6); text-align:center; }
+
+    /* ── Note cell (6th grid slot if < 6 photos) ── */
+    .note-cell { display:flex; flex-direction:column; align-items:center; justify-content:center; min-height:220px; gap:0; position:relative; }
+    .note-cell-inner { position:relative; width:100%; }
+    .note-cell-behind { position:absolute; inset:0; border-radius:3px; background:var(--r-blush); transform:rotate(4deg); box-shadow:2px 3px 10px rgba(180,80,100,.12); z-index:0; }
+    .note-cell-front  { position:relative; z-index:1; border-radius:3px; padding:20px 16px 26px; box-shadow:2px 4px 14px rgba(180,80,100,.15); }
+
+    /* ── Final teaser ── */
+    .teaser-wrap { max-width:440px; margin:36px auto 0; padding:0 14px; }
+    .teaser-card {
+      background:linear-gradient(145deg,#fce8ed,#fdf8fa); border-radius:14px;
+      padding:28px 24px; text-align:center; position:relative;
+      border:2px dashed rgba(212,116,138,.38);
+      box-shadow:0 6px 24px rgba(212,116,138,.22);
+    }
+    .teaser-card p { font-family:var(--f-cute); font-size:1.05rem; color:#7a5060; margin:12px 0 18px; }
+    .teaser-hint { font-family:var(--f-journal); font-size:.82rem; color:#a06070; margin:0 0 16px; opacity:.72; }
+  </style>
+</head>
+<body>
+<div id="page-transition"></div>
+<div class="hearts-container" aria-hidden="true"></div>
+
+<div class="page-bg">
+  <div class="lace-band" aria-hidden="true"></div>
+
+  <div class="page-wrapper">
+
+    <!-- ═══════════ HERO ═══════════ -->
+    <header class="preview-hero">
+      <div class="preview-hero-inner" data-anim="pop">
+
+        <div class="washi washi-rose"    style="width:90px;top:-9px;left:14px;transform:rotate(-5deg);"   aria-hidden="true"></div>
+        <div class="washi washi-gingham" style="width:74px;top:-9px;right:16px;transform:rotate(4deg);"   aria-hidden="true"></div>
+        <div class="washi washi-hearts"  style="width:108px;bottom:-9px;left:50%;transform:translateX(-50%) rotate(-1deg);" aria-hidden="true"></div>
+
+        <div style="display:flex;justify-content:center;margin-bottom:8px;" aria-hidden="true" id="hw-bow"></div>
+        <div class="lace-top" style="margin:4px 0 14px;" aria-hidden="true"></div>
+
+        <h1 class="preview-title" id="page-title">Happy Birthday!</h1>
+        <p class="preview-sub">&#10022; a little scrapbook just for you &#10022;</p>
+
+        <div class="lace-bottom" style="margin:12px 0 10px;" aria-hidden="true"></div>
+
+        <p class="preview-invite" id="page-invite">
+          I made this little corner of the internet<br/>
+          to celebrate <em id="recipient-name">you</em> &mdash; flip through the photos<br/>
+          and find a surprise waiting at the end.
+        </p>
+
+        <div class="q-card scallop" style="margin:16px auto 0;max-width:280px;">
+          you are so so so loved
+          <span class="q-heart">&#9825;</span>
+        </div>
+
+        <div style="position:absolute;bottom:-22px;right:22px;z-index:5;" id="hw-seal" aria-hidden="true"></div>
+        <div style="position:absolute;top:10px;right:12px;transform:rotate(6deg);z-index:5;" id="hw-stamp" aria-hidden="true"></div>
+        <div style="position:absolute;top:8px;left:10px;transform:rotate(-15deg);opacity:.55;" id="hw-sprig" aria-hidden="true"></div>
+
+      </div>
+    </header>
+
+    <div style="text-align:center;padding:22px 0 8px;font-family:var(--f-shadow);font-size:1rem;letter-spacing:.5rem;opacity:.4;color:#c47a8a;" aria-hidden="true">&#10022; &#10022; &#10022; &#10022; &#10022;</div>
+
+    <!-- ═══════════ COLLAGE BOARD ═══════════ -->
+    <main class="board-wrapper" id="main-content">
+      <div class="collage-board">
+
+        <div class="lace-top" style="position:absolute;top:0;left:0;right:0;" aria-hidden="true"></div>
+        <div class="lace-bottom" style="position:absolute;bottom:0;left:0;right:0;transform:scaleY(-1);" aria-hidden="true"></div>
+
+        <!-- Gingham corner patches -->
+        <div class="gingham" style="position:absolute;top:0;right:0;width:90px;height:90px;opacity:.28;border-radius:0 4px 0 0;" aria-hidden="true"></div>
+        <div class="gingham" style="position:absolute;bottom:0;left:0;width:72px;height:72px;opacity:.22;border-radius:0 0 0 4px;"  aria-hidden="true"></div>
+
+        <!-- Washi tape strips across board -->
+        <div class="washi washi-floral"  style="width:175px;top:44px;left:-10px;transform:rotate(-1deg);"  aria-hidden="true"></div>
+        <div class="washi washi-gingham" style="width:140px;top:44px;right:-10px;transform:rotate(2deg);"  aria-hidden="true"></div>
+        <div class="washi washi-lace"    style="width:200px;bottom:38px;left:18%;transform:rotate(-2deg);"  aria-hidden="true"></div>
+        <div class="washi washi-hearts"  style="width:160px;bottom:38px;right:14%;transform:rotate(3deg);"  aria-hidden="true"></div>
+
+        <!-- Board section label -->
+        <div style="text-align:center;position:relative;z-index:2;padding-bottom:18px;" data-anim="fade">
+          <div style="display:inline-block;background:var(--r-parch);border:1.5px solid rgba(196,122,138,.38);border-radius:4px;padding:7px 18px;font-family:var(--f-body);font-size:.78rem;color:var(--r-ink);letter-spacing:.12em;text-transform:uppercase;box-shadow:1px 2px 8px rgba(180,80,100,.14);outline:2px dashed rgba(196,122,138,.25);outline-offset:3px;">
+            <span style="display:block;font-size:.62rem;opacity:.7;letter-spacing:.1em;" id="board-label-count">No. 001</span>
+            Treasured Memories
+          </div>
+          <p style="font-family:var(--f-cute);font-size:.9rem;color:#a06070;margin-top:7px;opacity:.7;">&#10003; click any photo to read its story &#10003;</p>
+        </div>
+
+        <!-- Torn paper strip top -->
+        <div class="torn-top" style="margin:0 0 4px;" aria-hidden="true"></div>
+
+        <!-- ── PHOTO GRID ── -->
+        <div class="photo-grid" id="photo-grid"></div>
+
+        <!-- Torn paper strip bottom -->
+        <div class="torn-bottom" style="margin:4px 0 0;" aria-hidden="true"></div>
+
+        <!-- Scattered quote stickers -->
+        <div class="scatter-deco" style="top:62px;right:24px;transform:rotate(6deg);" aria-hidden="true">
+          <div class="q-card torn-note" style="width:110px;padding:10px 12px;box-shadow:2px 3px 8px rgba(160,70,90,.14);">
+            <span style="font-size:.78rem;line-height:1.4;">romanticize your life a little more</span>
+            <span class="q-heart">&#9825;</span>
+          </div>
+        </div>
+        <div class="scatter-deco" style="bottom:70px;left:22px;transform:rotate(-5deg);" aria-hidden="true">
+          <div class="q-card scallop" style="width:100px;padding:10px 12px;">
+            <span style="font-size:.78rem;line-height:1.4;">collect beautiful moments.</span>
+            <span class="q-heart">&#9825;</span>
+          </div>
+        </div>
+
+      </div><!-- /.collage-board -->
+
+      <!-- ═══════════ FINAL TEASER ═══════════ -->
+      <div style="text-align:center;padding:20px 0 6px;font-family:var(--f-shadow);font-size:.9rem;letter-spacing:.55rem;opacity:.38;color:#c47a8a;" aria-hidden="true">&#10022; &#10022; &#10022; &#10022; &#10022;</div>
+
+      <div class="teaser-wrap">
+        <div class="teaser-card" data-anim="pop" data-delay="300">
+          <div class="washi washi-rose"    style="width:90px;top:-9px;left:50%;transform:translateX(-50%) rotate(-3deg);"  aria-hidden="true"></div>
+          <div class="washi washi-gingham" style="width:60px;bottom:-9px;left:20%;transform:rotate(2deg);"   aria-hidden="true"></div>
+          <div class="washi washi-hearts"  style="width:52px;bottom:-9px;right:18%;transform:rotate(-4deg);"  aria-hidden="true"></div>
+
+          <div style="display:flex;justify-content:center;margin-bottom:8px;" id="teaser-bouquet" aria-hidden="true"></div>
+          <div style="display:flex;justify-content:center;margin:4px 0 10px;" id="teaser-bow" aria-hidden="true"></div>
+
+          <p>There&rsquo;s a special letter<br/>waiting just for you&hellip;</p>
+          <p class="teaser-hint">sealed with a heart &#9825;</p>
+          <a href="final.html" class="btn-ribbon" aria-label="Open the birthday letter">
+            <img id="teaser-letter-icon" src="../assets/letter.png" width="22" height="22"
+              alt="" aria-hidden="true" draggable="false"
+              style="object-fit:contain;filter:drop-shadow(0 1px 3px rgba(100,40,60,.22));flex-shrink:0;">
+            open my letter
+          </a>
+
+          <!-- Seal — moved outside teaser card so it doesn't float over text -->
+          <div style="position:absolute;bottom:-16px;right:18px;z-index:5;" id="teaser-seal" aria-hidden="true"></div>
+          <!-- Corner flowers — small, at corners, not over text -->
+          <div style="position:absolute;top:8px;right:10px;transform:rotate(12deg);opacity:.6;" id="teaser-fl-r" aria-hidden="true"></div>
+          <div style="position:absolute;top:8px;left:10px;transform:rotate(-10deg);opacity:.6;"  id="teaser-fl-l" aria-hidden="true"></div>
+        </div>
+      </div>
+
+      <!-- ── Back to generator ── -->
+      <div style="text-align:center;margin-top:36px;">
+        <a href="../index.html" class="btn-bow" aria-label="Back to generator">&#8592; edit your scrapbook</a>
+      </div>
+
+    </main>
+  </div><!-- /.page-wrapper -->
+
+  <div class="lace-band flip" style="margin-top:8px;" aria-hidden="true"></div>
+  <footer class="footer-bar" role="contentinfo">
+    <p>Handcrafted with &#9825; by <a href="https://github.com/pizzyboo" target="_blank" rel="noopener">pizzyboo</a></p>
+  </footer>
+</div><!-- /.page-bg -->
+
+<!-- Music player -->
+<div class="music-player" id="music-player" role="region" aria-label="Background music controls" style="display:none;">
+  <span class="music-label" id="music-label">background music</span>
+  <span class="music-note-anim" aria-hidden="true" style="font-size:1rem;">&#9835;</span>
+  <button class="btn-music" id="btn-music" aria-label="Play or pause background music">&#9654;</button>
+</div>
+
+<script src="../js/svgs.js"></script>
+<script src="../js/animations.js"></script>
+<script src="../js/data-seed.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  /* ── Load data (data-seed.js has already seeded sessionStorage) ── */
+  let data = {};
+  try { data = JSON.parse(sessionStorage.getItem('scrapbookData') || '{}'); } catch(e) {}
+
+  const photos = (data.photos || []).filter(Boolean);
+  const title  = data.title          || 'Happy Birthday, Anin!!';
+  const name   = data.recipientName  || 'Anin';
+
+  /* ── Update page text ── */
+  document.getElementById('page-title').textContent     = title;
+  document.getElementById('recipient-name').textContent = name;
+  document.title = title;
+  const boardLabel = document.getElementById('board-label-count');
+  if (boardLabel) boardLabel.textContent = `No. 001 — 00${Math.max(1, photos.length)}`;
+
+  /* ── Inject hero decorations ── */
+  const inj = (id, html) => { const el = document.getElementById(id); if (el) el.innerHTML = html; };
+  inj('hw-bow',         SVG.bow(82));
+  inj('hw-seal',        SVG.waxSeal(36));
+  inj('hw-stamp',       SVG.stamp(38, '', 'BDAY'));
+  inj('hw-sprig',       SVG.flower2(28));
+  inj('teaser-bouquet', SVG.flower(50));
+  inj('teaser-bow',     SVG.bow(68));
+  inj('teaser-seal',    SVG.waxSeal(34));
+  inj('teaser-fl-r',    SVG.flower2(22));
+  inj('teaser-fl-l',    SVG.flower2(22));
+
+  /* ── Short captions for polaroids ── */
+  const defaultCaptions = [
+    'Bento Coffee',
+    'Bandung trip',
+    'Chicken place',
+    'Before going home',
+    'Always beautiful',
+    'That outfit',
+  ];
+
+  /* ── Build photo grid ── */
+  const grid      = document.getElementById('photo-grid');
+  const rotations = [-3, 2, 4, -2, 1, 3, -4, 2, -1];
+
+  if (photos.length === 0) {
+    for (let i = 0; i < 6; i++) {
+      buildPolaroid(grid, null, defaultCaptions[i] || `memory ${i+1}`, rotations[i % rotations.length], i);
+    }
+  } else {
+    photos.forEach((p, i) => {
+      const cap = p.caption || defaultCaptions[i] || `memory ${i+1}`;
+      buildPolaroid(grid, p, cap, rotations[i % rotations.length], i);
+    });
+    if (photos.length < 6) buildNoteCell(grid);
+  }
+
+  /* ─── buildPolaroid ─── */
+  function buildPolaroid(container, photo, caption, rot, idx) {
+    const a = document.createElement('a');
+    a.href      = `photo.html?p=${idx}`;
+    a.className = 'pol-card';
+    a.dataset.r    = rot;
+    a.dataset.anim = 'pop';
+    a.dataset.delay = String(idx * 80);
+    a.setAttribute('aria-label', `Memory ${idx + 1} — ${caption}`);
+
+    /* Washi tape strip — sits above the top edge of the polaroid, not over photo */
+    const washiTypes = ['washi-rose','washi-gingham','washi-hearts','washi-lace','washi-floral','washi-cream'];
+    const tape = document.createElement('div');
+    tape.className = `washi ${washiTypes[idx % washiTypes.length]}`;
+    tape.style.cssText = `width:58px;top:-9px;left:50%;transform:translateX(-50%) rotate(${rot > 0 ? -rot : rot}deg);z-index:2;`;
+    tape.setAttribute('aria-hidden','true');
+    a.appendChild(tape);
+
+    /* Photo area */
+    const photoDiv = document.createElement('div');
+    photoDiv.className = 'pol-photo';
+    if (photo && photo.dataUrl) {
+      const img = document.createElement('img');
+      img.src     = photo.dataUrl;
+      img.alt     = caption;
+      img.loading = 'lazy';
+      img.style.cssText = 'width:100%;height:100%;object-fit:cover;display:block;';
+      photoDiv.appendChild(img);
+    } else {
+      photoDiv.innerHTML = `<div class="pol-placeholder"><div id="pol-deco-${idx}" style="opacity:.6;"></div><p class="ph-text">memory ${idx+1}</p></div>`;
+    }
+    a.appendChild(photoDiv);
+
+    /* Caption */
+    const cap = document.createElement('p');
+    cap.className   = 'pol-caption';
+    cap.textContent = caption;
+    a.appendChild(cap);
+
+    /* Sticker — small, bottom-right corner of caption area only */
+    const sticker = document.createElement('div');
+    sticker.id            = `pol-sticker-${idx}`;
+    sticker.style.cssText = 'position:absolute;bottom:4px;right:4px;z-index:3;pointer-events:none;opacity:.7;';
+    sticker.setAttribute('aria-hidden','true');
+    a.appendChild(sticker);
+
+    container.appendChild(a);
+  }
+
+  /* ─── buildNoteCell ─── */
+  function buildNoteCell(container) {
+    const div = document.createElement('div');
+    div.className = 'note-cell';
+    div.dataset.anim  = 'pop';
+    div.dataset.delay = '400';
+    div.innerHTML = `
+      <div class="note-cell-inner">
+        <div class="note-cell-behind" aria-hidden="true"></div>
+        <div class="note-cell-front gingham">
+          <div class="washi washi-hearts" style="width:72px;top:-9px;left:50%;transform:translateX(-50%) rotate(-2deg);" aria-hidden="true"></div>
+          <div style="display:flex;justify-content:center;margin-bottom:10px;" id="note-cell-bow" aria-hidden="true"></div>
+          <p style="font-family:var(--f-hand);font-size:1rem;color:var(--r-ink);text-align:center;line-height:1.55;margin:0;position:relative;z-index:1;">
+            "Every day with you is a gift I never want to return."
+          </p>
+          <p style="font-family:var(--f-title);font-size:1.1rem;color:#8b4055;text-align:right;margin-top:10px;position:relative;z-index:1;">
+            &mdash; with love &#9825;
+          </p>
+          <div class="lace-scallop" style="margin-top:12px;" aria-hidden="true"></div>
+          <div style="display:flex;justify-content:center;margin-top:10px;" id="note-cell-seal" aria-hidden="true"></div>
+        </div>
+      </div>`;
+    container.appendChild(div);
+  }
+
+  /* ── Inject polaroid stickers + placeholder decos ── */
+  setTimeout(() => {
+    const inj2 = (id, html) => { const el = document.getElementById(id); if (el) el.innerHTML = html; };
+
+    /* Alternate small stickers — never larger than needed */
+    const stickerFns = [
+      () => SVG.waxSeal(20),
+      () => SVG.bow(28),
+      () => SVG.waxSeal(20),
+      () => SVG.heart(20),
+      () => SVG.bow(26),
+      () => SVG.flower2(20),
+    ];
+    const count = Math.max(photos.length, 6);
+    for (let i = 0; i < count; i++) {
+      inj2(`pol-sticker-${i}`, stickerFns[i % stickerFns.length]());
+      if (!photos[i]) {
+        const decos = [SVG.flower(38), SVG.butterfly(42), SVG.flower2(34),
+                       SVG.heart(30),  SVG.bow(44),        SVG.flower(36)];
+        inj2(`pol-deco-${i}`, decos[i % decos.length]);
+      }
+    }
+    inj2('note-cell-bow',  SVG.bow(62));
+    inj2('note-cell-seal', SVG.waxSeal(30));
+  }, 0);
+
+  /* ── Animations ── */
+  ScrapAnimations.initFloatingHearts('.hearts-container', 8);
+  ScrapAnimations.initSparkles(true);
+  ScrapAnimations.initCursorTrail();
+  ScrapAnimations.initEntranceAnims();
+  ScrapAnimations.initPolaroidTilt();
+  ScrapAnimations.initTransitions();
+  ScrapAnimations.initMusicPlayer();
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>Scrapbook Birthday Generator</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;600;700&family=Satisfy&family=Indie+Flower&family=Kalam:wght@300;400;700&family=Shadows+Into+Light&family=Patrick+Hand&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="css/scrapbook-gen.css"/>
+  <style>
+    /* ── Generator-page specific decorative overrides ── */
+    .hero-deco-row { display:flex; justify-content:center; align-items:flex-end; gap:8px; margin-bottom:14px; pointer-events:none; }
+    .form-row      { display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-bottom:16px; }
+    .form-row.single { grid-template-columns:1fr; }
+    .form-group    { display:flex; flex-direction:column; gap:6px; margin-bottom:16px; }
+    .char-count    { font-family:var(--f-cute); font-size:.72rem; color:#b08090; text-align:right; margin-top:2px; }
+    .tip-text      { font-family:var(--f-cute); font-size:.78rem; color:#a06070; opacity:.72; margin-bottom:4px; }
+    /* Section washi decoration strips */
+    .section-washi { position:absolute; top:-9px; left:18px; }
+    .section-washi-r { position:absolute; top:-9px; right:18px; }
+    /* Photo count badge */
+    #photo-count { display:inline-block; background:var(--r-blush); border-radius:20px; padding:3px 12px; font-family:var(--f-cute); font-size:.78rem; color:var(--r-ink); margin-left:10px; }
+    /* Music section */
+    .music-upload-label { display:inline-flex; align-items:center; gap:8px; cursor:pointer; padding:9px 18px; background:linear-gradient(135deg,var(--r-petal),var(--r-blush)); border:1.5px solid rgba(196,122,138,.4); border-radius:20px; font-family:var(--f-cute); font-size:.9rem; color:var(--r-ink); transition:transform .2s; }
+    .music-upload-label:hover { transform:scale(1.03); }
+    #music-name { font-family:var(--f-cute); font-size:.82rem; color:#a06070; opacity:0; transition:opacity .3s; }
+    /* Letter textarea */
+    #gen-letter { min-height:160px; font-family:var(--f-journal); font-size:.98rem; line-height:1.8; }
+    /* Previews strip */
+    .live-preview { text-align:center; padding:10px 0 4px; font-family:var(--f-shadow); font-size:1.1rem; color:#8b4055; opacity:.7; }
+    @media(max-width:600px) { .form-row { grid-template-columns:1fr; } }
+  </style>
+</head>
+<body>
+<div id="page-transition"></div>
+<div class="hearts-container" aria-hidden="true"></div>
+
+<div class="page-bg">
+  <!-- Top lace band -->
+  <div class="lace-band" aria-hidden="true"></div>
+
+  <div class="page-wrapper">
+    <!-- ═══════════════════════ HERO ═══════════════════════ -->
+    <header class="gen-hero">
+      <div class="gen-hero-inner" data-anim="pop">
+
+        <!-- Washi tapes across top of card -->
+        <div class="washi washi-rose"    style="width:90px;top:-9px;left:14px;transform:rotate(-5deg);"  aria-hidden="true"></div>
+        <div class="washi washi-gingham" style="width:72px;top:-9px;right:16px;transform:rotate(4deg);"  aria-hidden="true"></div>
+        <div class="washi washi-hearts"  style="width:110px;bottom:-9px;left:50%;transform:translateX(-50%) rotate(-1deg);" aria-hidden="true"></div>
+
+        <!-- Rose + bow deco row -->
+        <div class="hero-deco-row" aria-hidden="true">
+          <div id="hero-sprig-l"></div>
+          <div id="hero-bow-main"></div>
+          <div id="hero-sprig-r"></div>
+        </div>
+
+        <!-- Lace divider top -->
+        <div class="lace-top" style="margin:2px 0 14px;" aria-hidden="true"></div>
+
+        <h1 class="gen-title">Scrapbook Birthday<br/>Generator</h1>
+        <p class="gen-sub">create a handcrafted birthday website in minutes</p>
+
+        <!-- Lace divider bottom -->
+        <div class="lace-bottom" style="margin:12px 0 10px;" aria-hidden="true"></div>
+
+        <!-- Tagline note card -->
+        <div class="q-card scallop" style="max-width:300px;margin:0 auto 4px;">
+          Upload photos &bull; write a letter &bull; share the love
+          <span class="q-heart">&#9825;</span>
+        </div>
+
+        <!-- Wax seal bottom-right -->
+        <div id="hero-seal" style="position:absolute;bottom:-22px;right:20px;z-index:5;" aria-hidden="true"></div>
+
+        <!-- Stamp top-right -->
+        <div style="position:absolute;top:8px;right:10px;transform:rotate(7deg);z-index:5;" aria-hidden="true" id="hero-stamp"></div>
+
+      </div>
+    </header>
+
+    <!-- deco divider -->
+    <div style="text-align:center;padding:22px 0 6px;font-family:var(--f-shadow);font-size:.95rem;letter-spacing:.6rem;opacity:.38;color:#c47a8a;" aria-hidden="true">&#10022; &#10022; &#10022; &#10022; &#10022;</div>
+
+    <!-- ═══════════════════════ FORM ═══════════════════════ -->
+    <main class="gen-wrapper" id="main-content">
+      <form id="scrapbook-form" novalidate>
+
+        <!-- ── SECTION 1: Basics ── -->
+        <div class="form-section" data-anim="fade" data-delay="60">
+          <div class="washi washi-floral section-washi"  style="width:100px;" aria-hidden="true"></div>
+          <div class="washi washi-hearts section-washi-r" style="width:80px;"  aria-hidden="true"></div>
+
+          <div class="section-label">
+            <div id="sec1-rose" aria-hidden="true"></div>
+            Step 1 &mdash; The Basics
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label class="scrap-label" for="gen-title">Scrapbook Title</label>
+              <input id="gen-title" class="scrap-input" type="text" maxlength="48"
+                placeholder="Happy Birthday, [name]!" autocomplete="off"/>
+              <span class="char-count" id="title-count">0 / 48</span>
+            </div>
+            <div class="form-group">
+              <label class="scrap-label" for="gen-recipient">Birthday Person&rsquo;s Name</label>
+              <input id="gen-recipient" class="scrap-input" type="text" maxlength="32"
+                placeholder="e.g. Sofia" autocomplete="off" required/>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label class="scrap-label" for="gen-sender">Your Name (sender)</label>
+              <input id="gen-sender" class="scrap-input" type="text" maxlength="32"
+                placeholder="e.g. Emma" autocomplete="off"/>
+            </div>
+            <div class="form-group" style="justify-content:flex-end;">
+              <p class="tip-text" style="margin-top:auto;">These names appear on the letter and throughout the scrapbook.</p>
+            </div>
+          </div>
+
+          <!-- Live preview strip -->
+          <div class="live-preview">Preview: &ldquo;<span id="preview-title">Happy Birthday!</span>&rdquo;</div>
+        </div>
+
+        <!-- ── SECTION 2: Photos ── -->
+        <div class="form-section" data-anim="fade" data-delay="120">
+          <div class="washi washi-gingham section-washi"  style="width:88px;"  aria-hidden="true"></div>
+          <div class="washi washi-rose    section-washi-r" style="width:76px;"  aria-hidden="true"></div>
+
+          <div class="section-label">
+            <div id="sec2-bow" aria-hidden="true"></div>
+            Step 2 &mdash; Your Photos
+            <span id="photo-count">0 photos added</span>
+          </div>
+
+          <p class="tip-text">Upload up to 9 photos. Each will appear in its own polaroid frame. Click a photo to add a caption.</p>
+
+          <div class="upload-grid" id="upload-grid"></div>
+        </div>
+
+        <!-- ── SECTION 3: Birthday Letter ── -->
+        <div class="form-section" data-anim="fade" data-delay="180">
+          <div class="washi washi-hearts section-washi"   style="width:96px;"  aria-hidden="true"></div>
+          <div class="washi washi-floral section-washi-r" style="width:84px;"  aria-hidden="true"></div>
+
+          <div class="section-label">
+            <div id="sec3-seal" aria-hidden="true"></div>
+            Step 3 &mdash; Birthday Letter
+          </div>
+
+          <p class="tip-text">This letter will appear inside an animated envelope on the final page. Write from the heart.</p>
+
+          <!-- Decorative paper behind textarea -->
+          <div style="position:relative;">
+            <div style="position:absolute;inset:-5px 4px -5px -4px;background:linear-gradient(145deg,#fce8ed,#fdf5f7);border-radius:3px;box-shadow:2px 3px 10px rgba(180,80,100,.10);z-index:0;" aria-hidden="true"></div>
+            <textarea id="gen-letter" class="scrap-textarea" style="position:relative;z-index:1;"
+              placeholder="My dearest [name],&#10;&#10;I wanted to take a moment to tell you how much you mean to me...&#10;&#10;With all the love in the world,&#10;[your name]"></textarea>
+          </div>
+          <span class="char-count" id="letter-count" style="margin-top:6px;">0 characters</span>
+
+          <!-- Quote note cards for inspiration -->
+          <div style="display:flex;flex-wrap:wrap;gap:10px;margin-top:16px;" aria-hidden="true">
+            <div class="q-card" style="flex:1;min-width:140px;font-size:.78rem;transform:rotate(-1deg);">
+              you are so so so loved <span class="q-heart">&#9825;</span>
+            </div>
+            <div class="q-card torn-note" style="flex:1;min-width:140px;font-size:.78rem;transform:rotate(2deg);">
+              soft heart, strong mind. <span class="q-heart">&#9825;</span>
+            </div>
+            <div class="q-card scallop" style="flex:1;min-width:140px;font-size:.78rem;transform:rotate(-1.5deg);">
+              take it one day at a time. <span class="q-heart">&#9825;</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- ── SECTION 4: Music ── -->
+        <div class="form-section" data-anim="fade" data-delay="240">
+          <div class="washi washi-cream section-washi"    style="width:80px;"  aria-hidden="true"></div>
+          <div class="washi washi-lace  section-washi-r"  style="width:70px;"  aria-hidden="true"></div>
+
+          <div class="section-label">
+            <div id="sec4-butterfly" aria-hidden="true"></div>
+            Step 4 &mdash; Background Music <span style="opacity:.55;font-size:.7em;">(optional)</span>
+          </div>
+
+          <p class="tip-text">Upload an audio file (MP3, OGG, WAV). It will play softly on your scrapbook pages.</p>
+
+          <div class="music-row">
+            <label class="music-upload-label" for="gen-music">
+              <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true">
+                <circle cx="9" cy="9" r="8" stroke="#c47a8a" stroke-width="1.5"/>
+                <path d="M7 12V6l6 3-6 3Z" fill="#c47a8a"/>
+              </svg>
+              Choose Music File
+            </label>
+            <input id="gen-music" type="file" accept="audio/*" style="display:none;" aria-label="Upload background music"/>
+            <span id="music-name" class="music-info">no file chosen</span>
+          </div>
+        </div>
+
+        <!-- ── GENERATE BUTTON ── -->
+        <div data-anim="pop" data-delay="280">
+          <!-- Torn paper strip above button -->
+          <div class="torn-top" style="margin-bottom:-2px;" aria-hidden="true"></div>
+
+          <div style="background:linear-gradient(180deg,rgba(252,232,237,.5),rgba(253,246,238,.4));padding:28px 20px 24px;text-align:center;position:relative;">
+
+            <!-- Scattered sticker row above button -->
+            <div style="display:flex;justify-content:center;align-items:center;gap:16px;margin-bottom:18px;flex-wrap:wrap;" aria-hidden="true">
+              <div id="gen-rose-l"  style="transform:rotate(-15deg);opacity:.7;"></div>
+              <div id="gen-bow-ctr" style="transform:scale(.9);"></div>
+              <div id="gen-rose-r"  style="transform:rotate(12deg);opacity:.7;"></div>
+            </div>
+
+            <button type="submit" class="btn-generate" id="btn-generate" aria-label="Generate your scrapbook birthday website">
+              <svg width="22" height="22" viewBox="0 0 22 22" fill="none" aria-hidden="true">
+                <path d="M11 2C6 2 2 6 2 11s4 9 9 9 9-4 9-9-4-9-9-9Z" fill="rgba(255,255,255,.25)"/>
+                <path d="M11 6v5l3.5 2" stroke="white" stroke-width="2" stroke-linecap="round"/>
+              </svg>
+              Generate My Scrapbook
+            </button>
+
+            <p style="font-family:var(--f-cute);font-size:.82rem;color:#a06070;margin-top:12px;opacity:.65;">
+              Your photos &amp; letter stay private &mdash; everything is stored in your browser only.
+            </p>
+          </div>
+
+          <div class="torn-bottom" style="margin-top:-2px;" aria-hidden="true"></div>
+        </div>
+
+      </form>
+    </main>
+
+  </div><!-- /.page-wrapper -->
+
+  <!-- Bottom lace & footer -->
+  <div class="lace-band flip" style="margin-top:8px;" aria-hidden="true"></div>
+  <footer class="footer-bar" role="contentinfo">
+    <p>Handcrafted with &#9825; by <a href="https://github.com/pizzyboo" target="_blank" rel="noopener">pizzyboo</a></p>
+  </footer>
+
+</div><!-- /.page-bg -->
+
+<!-- Scripts -->
+<script src="js/svgs.js"></script>
+<script>SVG.setBase('./assets/');</script>
+<script src="js/animations.js"></script>
+<script src="js/data-seed.js"></script>
+<script src="js/generator.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  /* ── Inject SVG decorations ── */
+  const inj = (id, html) => { const el = document.getElementById(id); if (el) el.innerHTML = html; };
+  inj('hero-sprig-l',   SVG.sprig(38));
+  inj('hero-bow-main',  SVG.bow(90));
+  inj('hero-sprig-r',   SVG.sprig(38));
+  inj('hero-seal',      SVG.waxSeal(42, '&#127801;'));
+  inj('hero-stamp',     SVG.stamp(44, '&#127800;', 'BDAY'));
+  inj('sec1-rose',      SVG.roseMini(22));
+  inj('sec2-bow',       SVG.bow(32));
+  inj('sec3-seal',      SVG.waxSeal(24, '&#9825;'));
+  inj('sec4-butterfly', SVG.butterfly(30));
+  inj('gen-rose-l',     SVG.rose(52));
+  inj('gen-bow-ctr',    SVG.bow(88));
+  inj('gen-rose-r',     SVG.rose(52));
+
+  /* ── Animations ── */
+  ScrapAnimations.initFloatingHearts('.hearts-container', 9);
+  ScrapAnimations.initSparkles(true);
+  ScrapAnimations.initCursorTrail();
+  ScrapAnimations.initEntranceAnims();
+  ScrapAnimations.initTransitions();
+
+  /* ── Live char counts ── */
+  const titleInput  = document.getElementById('gen-title');
+  const letterArea  = document.getElementById('gen-letter');
+  const titleCount  = document.getElementById('title-count');
+  const letterCount = document.getElementById('letter-count');
+
+  if (titleInput && titleCount) {
+    titleInput.addEventListener('input', () => {
+      titleCount.textContent = `${titleInput.value.length} / 48`;
+    });
+  }
+  if (letterArea && letterCount) {
+    letterArea.addEventListener('input', () => {
+      letterCount.textContent = `${letterArea.value.length} characters`;
+      letterArea.style.height = 'auto';
+      letterArea.style.height = letterArea.scrollHeight + 'px';
+    });
+  }
+});
+</script>
+</body>
+</html>
