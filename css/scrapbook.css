@@ -1,0 +1,460 @@
+/* ================================================
+   SCRAPBOOK.CSS  —  Reference-Accurate Components
+   Primary palette: dusty rose, blush, cream, aged parchment
+   ALL elements match the uploaded reference images
+   ================================================ */
+
+/* ── Custom Properties ── */
+:root {
+  /* Reference-exact palette */
+  --r-deep:    #c47a8a;   /* deep rose */
+  --r-mid:     #d9909e;   /* mid rose */
+  --r-soft:    #e8adb8;   /* soft rose */
+  --r-blush:   #f2cdd4;   /* blush */
+  --r-petal:   #fae4e8;   /* petal */
+  --r-pale:    #fdf0f2;   /* pale blush */
+  --r-cream:   #fdf6ee;   /* warm cream */
+  --r-parch:   #f9f0df;   /* parchment */
+  --r-aged:    #f0e0c8;   /* aged paper */
+  --r-linen:   #ede0d4;   /* linen */
+  --r-ink:     #5c3d44;   /* dark rose ink */
+  --r-shadow:  0 4px 18px rgba(180,80,100,0.18);
+  --r-shadow2: 0 8px 32px rgba(160,70,90,0.22);
+  --r-shadow3: 2px 3px 12px rgba(160,70,90,0.15);
+  --r-gingham: #f7d6dd;   /* gingham pink */
+}
+
+/* ================================================
+   GLOBAL BODY — aged parchment base
+   ================================================ */
+body {
+  background-color: var(--r-cream) !important;
+  background-image:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='400'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='400' height='400' filter='url(%23n)' opacity='0.045'/%3E%3C/svg%3E") !important;
+}
+
+/* ================================================
+   GINGHAM PATTERNS
+   ================================================ */
+.gingham {
+  background-color: #fdf4f5;
+  background-image:
+    repeating-linear-gradient(0deg,   transparent, transparent 16px, rgba(212,144,158,0.32) 16px, rgba(212,144,158,0.32) 18px),
+    repeating-linear-gradient(90deg,  transparent, transparent 16px, rgba(212,144,158,0.32) 16px, rgba(212,144,158,0.32) 18px);
+}
+.gingham-sm {
+  background-color: #fdf4f5;
+  background-image:
+    repeating-linear-gradient(0deg,   transparent, transparent 9px, rgba(212,144,158,0.28) 9px, rgba(212,144,158,0.28) 10px),
+    repeating-linear-gradient(90deg,  transparent, transparent 9px, rgba(212,144,158,0.28) 9px, rgba(212,144,158,0.28) 10px);
+}
+.gingham-deep {
+  background-color: #fce8ed;
+  background-image:
+    repeating-linear-gradient(0deg,   transparent, transparent 12px, rgba(196,122,138,0.38) 12px, rgba(196,122,138,0.38) 14px),
+    repeating-linear-gradient(90deg,  transparent, transparent 12px, rgba(196,122,138,0.38) 12px, rgba(196,122,138,0.38) 14px);
+}
+
+/* ================================================
+   FLORAL REPEAT PAPER (background pattern)
+   ================================================ */
+.floral-paper {
+  background-color: #fdf6f7;
+  background-image:
+    radial-gradient(ellipse 7px 6px at 16px 16px, rgba(196,122,138,.14) 55%, transparent 70%),
+    radial-gradient(ellipse 4px 3px at 11px 11px, rgba(196,122,138,.09) 55%, transparent 70%),
+    radial-gradient(ellipse 6px 5px at 40px 38px, rgba(196,122,138,.11) 55%, transparent 70%),
+    radial-gradient(ellipse 3px 3px at 38px 14px, rgba(196,122,138,.08) 55%, transparent 70%);
+  background-size: 52px 52px;
+}
+.bow-paper {
+  background-color: var(--r-cream);
+  background-image:
+    radial-gradient(ellipse 8px 5px at 22px 22px, rgba(196,122,138,.10) 100%, transparent 100%),
+    radial-gradient(ellipse 8px 5px at 18px 22px, rgba(196,122,138,.07) 100%, transparent 100%);
+  background-size: 44px 44px;
+}
+
+/* ================================================
+   LACE BORDERS
+   ================================================ */
+.lace-top {
+  width: 100%; height: 20px; flex-shrink: 0;
+  background-image:
+    radial-gradient(circle 8px at 8px 100%, transparent 7px, rgba(232,173,184,0.65) 8px, rgba(232,173,184,0.65) 11px, transparent 12px),
+    radial-gradient(circle 5px at 8px 0%,   rgba(217,144,158,0.35) 4px, transparent 5px);
+  background-size: 16px 100%; background-repeat: repeat-x;
+}
+.lace-bottom {
+  width: 100%; height: 20px; flex-shrink: 0;
+  background-image:
+    radial-gradient(circle 8px at 8px 0%, transparent 7px, rgba(232,173,184,0.65) 8px, rgba(232,173,184,0.65) 11px, transparent 12px);
+  background-size: 16px 100%; background-repeat: repeat-x;
+}
+.lace-left {
+  width: 18px; height: 100%; flex-shrink: 0;
+  background-image:
+    radial-gradient(circle 7px at 100% 7px, transparent 6px, rgba(232,173,184,0.6) 7px, rgba(232,173,184,0.6) 10px, transparent 11px);
+  background-size: 100% 14px; background-repeat: repeat-y;
+}
+.lace-scallop {
+  height: 24px; width: 100%;
+  background-image:
+    radial-gradient(circle 12px at 12px 100%, transparent 11px, rgba(232,173,184,0.55) 12px, rgba(232,173,184,0.55) 15px, transparent 16px);
+  background-size: 24px 24px; background-repeat: repeat-x;
+}
+
+/* ================================================
+   WASHI TAPE STRIPS
+   ================================================ */
+.washi {
+  position: absolute;
+  height: 20px; border-radius: 1px;
+  opacity: .86; z-index: 10; pointer-events: none;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+}
+.washi-rose {
+  background: repeating-linear-gradient(
+    90deg,
+    rgba(242,205,212,.92) 0, rgba(242,205,212,.92) 7px,
+    rgba(222,165,175,.92) 7px, rgba(222,165,175,.92) 9px);
+}
+.washi-gingham {
+  background-color: rgba(253,240,243,.92);
+  background-image:
+    repeating-linear-gradient(0deg,   transparent, transparent 4px, rgba(212,144,158,.42) 4px, rgba(212,144,158,.42) 5px),
+    repeating-linear-gradient(90deg,  transparent, transparent 4px, rgba(212,144,158,.42) 4px, rgba(212,144,158,.42) 5px);
+}
+.washi-hearts {
+  background-color: rgba(242,205,212,.88);
+  background-image: radial-gradient(ellipse 4px 3px at 10px 50%, rgba(196,122,138,.7) 100%, transparent 100%);
+  background-size: 20px 100%; background-repeat: repeat-x;
+}
+.washi-lace {
+  background: rgba(253,240,243,.78);
+  border-top:    1px solid rgba(232,173,184,.6);
+  border-bottom: 1px solid rgba(232,173,184,.6);
+}
+.washi-floral {
+  background: repeating-linear-gradient(
+    90deg,
+    rgba(250,228,232,.9) 0, rgba(250,228,232,.9) 8px,
+    rgba(232,173,184,.9) 8px, rgba(232,173,184,.9) 10px);
+}
+.washi-cream {
+  background: repeating-linear-gradient(
+    90deg,
+    rgba(249,240,223,.92) 0, rgba(249,240,223,.92) 8px,
+    rgba(240,224,200,.92) 8px, rgba(240,224,200,.92) 10px);
+}
+
+/* ================================================
+   TORN PAPER (realistic jagged clip-path)
+   ================================================ */
+.torn { position: relative; }
+.torn::before {
+  content: ''; position: absolute;
+  top: -15px; left: 0; right: 0; height: 18px;
+  background: inherit;
+  clip-path: polygon(
+    0% 100%,1.2% 18%,2.4% 82%,3.6% 12%,4.8% 72%,6% 28%,
+    7.2% 88%,8.4% 8%,9.6% 65%,10.8% 38%,12% 92%,13.2% 18%,
+    14.4% 68%,15.6% 35%,16.8% 88%,18% 14%,19.2% 62%,20.4% 42%,
+    21.6% 90%,22.8% 20%,24% 70%,25.2% 10%,26.4% 65%,27.6% 40%,
+    28.8% 85%,30% 22%,31.2% 72%,32.4% 8%,33.6% 68%,34.8% 38%,
+    36% 90%,37.2% 16%,38.4% 65%,39.6% 35%,40.8% 82%,42% 18%,
+    43.2% 68%,44.4% 12%,45.6% 62%,46.8% 40%,48% 88%,49.2% 22%,
+    50.4% 72%,51.6% 8%,52.8% 65%,54% 38%,55.2% 86%,56.4% 18%,
+    57.6% 68%,58.8% 32%,60% 82%,61.2% 12%,62.4% 65%,63.6% 40%,
+    64.8% 90%,66% 20%,67.2% 72%,68.4% 8%,69.6% 62%,70.8% 38%,
+    72% 88%,73.2% 18%,74.4% 70%,75.6% 35%,76.8% 84%,78% 14%,
+    79.2% 65%,80.4% 40%,81.6% 90%,82.8% 20%,84% 72%,85.2% 10%,
+    86.4% 65%,87.6% 38%,88.8% 85%,90% 18%,91.2% 68%,92.4% 35%,
+    93.6% 82%,94.8% 15%,96% 65%,97.2% 38%,98.4% 78%,100% 25%,100% 100%);
+}
+.torn::after {
+  content: ''; position: absolute;
+  bottom: -14px; left: 0; right: 0; height: 17px;
+  background: inherit;
+  clip-path: polygon(
+    0% 0%,1.5% 78%,3% 15%,4.5% 80%,6% 28%,7.5% 88%,
+    9% 32%,10.5% 75%,12% 10%,13.5% 68%,15% 38%,16.5% 92%,
+    18% 22%,19.5% 78%,21% 35%,22.5% 82%,24% 18%,25.5% 72%,
+    27% 45%,28.5% 92%,30% 25%,31.5% 78%,33% 12%,34.5% 65%,
+    36% 40%,37.5% 90%,39% 22%,40.5% 74%,42% 32%,43.5% 82%,
+    45% 15%,46.5% 68%,48% 40%,49.5% 86%,51% 18%,52.5% 72%,
+    54% 35%,55.5% 85%,57% 18%,58.5% 72%,60% 12%,61.5% 68%,
+    63% 42%,64.5% 90%,66% 22%,67.5% 78%,69% 30%,70.5% 82%,
+    72% 18%,73.5% 68%,75% 40%,76.5% 88%,78% 20%,79.5% 72%,
+    81% 35%,82.5% 80%,84% 18%,85.5% 68%,87% 35%,88.5% 82%,
+    90% 18%,91.5% 65%,93% 40%,94.5% 82%,96% 22%,97.5% 72%,
+    99% 38%,100% 58%,100% 0%);
+}
+
+/* ================================================
+   PAPER CARD BASE (with aged texture)
+   ================================================ */
+.paper-base {
+  background: var(--r-pale);
+  border-radius: 3px;
+  box-shadow: var(--r-shadow);
+  position: relative;
+  overflow: visible;
+}
+.paper-lined {
+  background-image: repeating-linear-gradient(
+    transparent, transparent 25px,
+    rgba(196,122,138,0.13) 25px, rgba(196,122,138,0.13) 26px);
+  background-size: 100% 26px;
+  background-position: 0 10px;
+}
+.paper-lined::before {
+  content: '';
+  position: absolute; left: 20px; top: 0; bottom: 0; width: 1px;
+  background: rgba(196,122,138,0.22);
+}
+/* Corner dog-ear */
+.paper-dogear::after {
+  content: '';
+  position: absolute; bottom: 0; right: 0;
+  width: 20px; height: 20px;
+  background: linear-gradient(135deg, var(--r-linen) 50%, transparent 50%);
+  border-radius: 0 0 3px 0;
+}
+/* Parchment texture overlay */
+.parchment {
+  background: linear-gradient(160deg, #fdf8ec 0%, #f5e8cc 40%, #fdf3e0 70%, #f9edd8 100%);
+  box-shadow: 2px 3px 14px rgba(140,100,60,.22), inset 0 0 40px rgba(200,160,80,.08);
+  border-radius: 6px 6px 8px 8px;
+  border: 1px solid rgba(200,160,80,.2);
+}
+
+/* ================================================
+   VINTAGE GIFT TAG
+   ================================================ */
+.v-tag {
+  display: inline-block;
+  position: relative;
+  background: var(--r-parch);
+  border: 1.5px solid rgba(196,122,138,.4);
+  border-radius: 4px 4px 4px 4px;
+  padding: 10px 14px 10px;
+  font-family: 'Indie Flower', cursive;
+  font-size: .85rem; color: var(--r-ink);
+  box-shadow: 2px 3px 10px rgba(180,80,100,.14);
+  outline: 2px dashed rgba(196,122,138,.28);
+  outline-offset: 3px;
+}
+.v-tag::before {          /* hole */
+  content: '';
+  position: absolute; top: -9px; left: 50%;
+  transform: translateX(-50%);
+  width: 10px; height: 10px; border-radius: 50%;
+  background: var(--r-cream);
+  border: 1.5px solid rgba(196,122,138,.5);
+}
+.v-tag::after {           /* string */
+  content: '';
+  position: absolute; top: -22px; left: calc(50% - 0.5px);
+  width: 1.5px; height: 14px;
+  background: linear-gradient(180deg, transparent, var(--r-soft));
+}
+
+/* ================================================
+   POSTAGE STAMP
+   ================================================ */
+.stamp {
+  display: inline-block;
+  position: relative;
+  background: var(--r-pale);
+  padding: 6px 6px 20px 6px;
+  box-shadow: 1px 2px 8px rgba(180,80,100,.18);
+}
+/* 4-side perforations via pseudo + box repeating */
+.stamp::before {
+  content: '';
+  position: absolute;
+  inset: -7px;
+  background-image:
+    radial-gradient(circle 5px at 50% 50%, var(--r-cream) 40%, transparent 41%);
+  background-size: 13px 13px;
+  background-repeat: repeat;
+  z-index: -1;
+  background-color: var(--r-pale);
+}
+.stamp .stamp-img {
+  width: 100%; height: 100%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.6rem;
+}
+.stamp .stamp-val {
+  position: absolute; bottom: 4px; right: 6px;
+  font-family: 'Patrick Hand', cursive;
+  font-size: .6rem; color: var(--r-deep);
+  letter-spacing: .06em;
+}
+.stamp .stamp-label {
+  position: absolute; bottom: 4px; left: 6px;
+  font-family: 'Patrick Hand', cursive;
+  font-size: .55rem; color: var(--r-mid);
+  text-transform: uppercase; letter-spacing: .08em;
+}
+
+/* ================================================
+   WAX SEAL
+   ================================================ */
+.seal {
+  display: inline-flex; align-items: center; justify-content: center;
+  border-radius: 50%; position: relative; flex-shrink: 0;
+  background: radial-gradient(circle at 36% 30%, #e8849a 0%, #c4607a 45%, #a04060 100%);
+  box-shadow:
+    inset 0 3px 8px rgba(255,255,255,.32),
+    inset 0 -2px 6px rgba(0,0,0,.18),
+    0 4px 14px rgba(160,60,90,.42);
+}
+.seal::after {
+  content: ''; position: absolute; inset: 5px;
+  border-radius: 50%;
+  border: 1.5px solid rgba(255,255,255,.25);
+  pointer-events: none;
+}
+.seal-sm { width: 34px; height: 34px; font-size: .9rem; }
+.seal-md { width: 48px; height: 48px; font-size: 1.3rem; }
+.seal-lg { width: 64px; height: 64px; font-size: 1.7rem; }
+
+/* ================================================
+   SATIN BOW (SVG inline)
+   Full reference-accurate satin ribbon bow
+   ================================================ */
+.bow-wrap { display: inline-block; position: relative; filter: drop-shadow(0 3px 6px rgba(160,60,90,.3)); }
+
+/* Sizes */
+.bow-xs { transform: scale(.55); transform-origin: center; }
+.bow-sm { transform: scale(.75); transform-origin: center; }
+.bow-md { transform: scale(1.0); transform-origin: center; }
+.bow-lg { transform: scale(1.35); transform-origin: center; }
+.bow-xl { transform: scale(1.8);  transform-origin: center; }
+
+/* ================================================
+   POLAROID FRAME
+   ================================================ */
+.polaroid {
+  background: #fff;
+  padding: 10px 10px 44px;
+  border-radius: 1px;
+  box-shadow: 0 5px 20px rgba(0,0,0,.13), 0 2px 6px rgba(0,0,0,.07);
+  position: relative;
+  display: block;
+  text-decoration: none;
+  color: inherit;
+  transition: transform .35s cubic-bezier(.34,1.56,.64,1), box-shadow .3s ease;
+}
+.polaroid:hover { box-shadow: 0 12px 36px rgba(0,0,0,.18); }
+.polaroid .pol-photo {
+  width: 100%; aspect-ratio: 1;
+  overflow: hidden;
+  display: flex; align-items: center; justify-content: center;
+}
+.polaroid .pol-caption {
+  position: absolute; bottom: 0; left: 0; right: 0; height: 44px;
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Caveat', cursive; font-size: 1.05rem; color: #6b4050;
+  text-align: center; padding: 0 8px;
+}
+
+/* ================================================
+   QUOTE NOTE CARD (reference style)
+   ================================================ */
+.q-card {
+  position: relative;
+  background: var(--r-pale);
+  padding: 16px 18px;
+  border-radius: 4px;
+  box-shadow: var(--r-shadow3);
+  font-family: 'Indie Flower', cursive;
+  font-size: .9rem; color: var(--r-ink);
+  line-height: 1.55; text-align: center;
+}
+.q-card .q-heart {
+  display: block; font-size: .75rem;
+  color: var(--r-deep); margin-top: 5px;
+  opacity: .75;
+}
+/* Scalloped border variant */
+.q-card.scallop {
+  outline: 2.5px solid rgba(196,122,138,.35);
+  outline-offset: 4px;
+  border-radius: 6px;
+}
+/* Torn variant */
+.q-card.torn-note {
+  background: #fef8f9;
+  border-radius: 2px;
+}
+
+/* ================================================
+   NAVIGATION BUTTON (ribbon style)
+   ================================================ */
+.btn-ribbon {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 10px 24px;
+  background: linear-gradient(135deg, var(--r-blush), var(--r-soft));
+  border: none; border-radius: 40px;
+  font-family: 'Caveat', cursive; font-size: 1.1rem; font-weight: 600;
+  color: var(--r-ink); cursor: pointer; text-decoration: none;
+  box-shadow: 0 4px 14px rgba(196,122,138,.38);
+  transition: transform .22s ease, box-shadow .22s ease;
+  position: relative; overflow: hidden;
+}
+.btn-ribbon::before {
+  content: '';
+  position: absolute; top: 0; left: -100%;
+  width: 55%; height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,.28), transparent);
+  transform: skewX(-20deg); transition: left .5s ease;
+}
+.btn-ribbon:hover { transform: translateY(-2px) scale(1.03); box-shadow: 0 8px 22px rgba(196,122,138,.45); }
+.btn-ribbon:hover::before { left: 140%; }
+.btn-ribbon:active { transform: scale(.97); }
+
+/* ================================================
+   INLINE SVG ROSE — watercolor style
+   Used as a sprinkle decoration throughout
+   ================================================ */
+.svg-rose { display: inline-block; flex-shrink: 0; }
+
+/* ================================================
+   PAGE LOAD ANIMATION
+   ================================================ */
+.page-wrapper { animation: scrapLoad .7s ease both; }
+@keyframes scrapLoad { from { opacity:0; transform:translateY(10px); } to { opacity:1; transform:translateY(0); } }
+
+/* ================================================
+   FLOATING HEARTS (ambient)
+   ================================================ */
+.hearts-container { position:fixed; inset:0; pointer-events:none; z-index:999; overflow:hidden; }
+.heart { position:absolute; bottom:-50px; animation:floatHeart linear infinite; opacity:0; user-select:none; }
+@keyframes floatHeart {
+  0%   { opacity:0;   transform:translateY(0) rotate(0deg) scale(.8); }
+  10%  { opacity:.75; }
+  90%  { opacity:.4; }
+  100% { opacity:0;   transform:translateY(-110vh) rotate(20deg) scale(1.1); }
+}
+
+/* ================================================
+   PAGE TRANSITION OVERLAY
+   ================================================ */
+#page-transition {
+  position:fixed; inset:0; background:var(--r-pale);
+  z-index:9999; pointer-events:none; opacity:0; transition:opacity .4s ease;
+}
+#page-transition.fade-out { opacity:1; }
+
+/* ================================================
+   SCROLLBAR
+   ================================================ */
+::-webkit-scrollbar { width:7px; }
+::-webkit-scrollbar-track { background:var(--r-cream); }
+::-webkit-scrollbar-thumb { background:var(--r-blush); border-radius:20px; border:2px solid var(--r-cream); }
+::-webkit-scrollbar-thumb:hover { background:var(--r-soft); }
+::selection { background:var(--r-blush); color:var(--r-ink); }

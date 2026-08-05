@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Memory 5 — Counting Stars 🌙</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;500;600;700&family=Satisfy&family=Indie+Flower&family=Kalam:wght@300;400;700&family=Shadows+Into+Light&family=Patrick+Hand&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../css/style.css" />
+  <link rel="stylesheet" href="../css/photo.css" />
+  <link rel="stylesheet" href="../css/scrapbook.css" />
+  <style>
+    body { background-color:#fdf8f2 !important; }
+    .p5-layout { max-width:860px;margin:0 auto;padding:0 20px 80px; }
+    .p5-header { text-align:center;padding:36px 20px 8px;position:relative; }
+    .p5-header h1 {
+      font-family:'Satisfy',cursive;font-size:clamp(1.9rem,5vw,3rem);
+      color:#4a3060;text-shadow:2px 2px 0 rgba(200,180,240,0.7);
+    }
+    .p5-main { display:grid;grid-template-columns:1fr 1fr;gap:28px;align-items:start;margin-top:28px; }
+    .p5-photo-col { position:relative; }
+    .p5-msg-col { display:flex;flex-direction:column;gap:14px; }
+
+    /* Star/moon gingham bg behind photo */
+    .p5-star-bg {
+      position:absolute;inset:-14px;
+      border-radius:4px;z-index:0;
+    }
+
+    /* Layered polaroid: pink rose + moon postage stamp style */
+    .p5-polaroid {
+      position:relative;z-index:2;
+      background:#fff;
+      padding:11px 11px 52px;
+      border-radius:2px;
+      box-shadow:0 6px 28px rgba(80,40,100,0.14);
+    }
+    .p5-polaroid .img-wrap {
+      width:100%;aspect-ratio:4/3;overflow:hidden;
+      background:linear-gradient(145deg,#e8ddf8,#d0c0e8);
+      display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;
+    }
+    .p5-polaroid .pol-caption {
+      position:absolute;bottom:0;left:0;right:0;height:52px;
+      display:flex;align-items:center;justify-content:center;
+      font-family:'Caveat',cursive;font-size:1.15rem;color:#4a3060;
+    }
+
+    /* Vintage journal handwriting card (from reference) */
+    .journal-writing-card {
+      background:#fdf8e8;
+      border:1px solid rgba(180,160,100,0.3);
+      border-radius:3px;
+      padding:16px 18px;
+      position:relative;
+      box-shadow:2px 4px 12px rgba(100,80,40,0.12);
+      font-family:'Kalam',cursive;
+      font-size:.82rem;
+      color:#5a4020;
+      line-height:1.7;
+      /* Subtle ruled lines */
+      background-image:repeating-linear-gradient(transparent,transparent 20px,rgba(180,140,60,0.12) 20px,rgba(180,140,60,0.12) 21px);
+      background-size:100% 21px;
+      background-position:0 8px;
+    }
+    .journal-writing-card::before {
+      content:'';position:absolute;left:22px;top:0;bottom:0;
+      width:1px;background:rgba(200,100,100,0.2);
+    }
+    /* Corner dog-ear */
+    .journal-writing-card::after {
+      content:'';position:absolute;bottom:0;right:0;
+      width:16px;height:16px;
+      background:linear-gradient(135deg,#e8d8b8 50%,transparent 50%);
+      border-radius:0 0 3px 0;
+    }
+
+    @media(max-width:640px){ .p5-main{grid-template-columns:1fr;} .p5-star-bg{display:none;} }
+  </style>
+</head>
+<body>
+<div id="page-transition"></div>
+<div class="hearts-container" aria-hidden="true"></div>
+
+<div style="position:fixed;top:10px;left:10px;font-size:2.2rem;opacity:.1;pointer-events:none;z-index:0;" aria-hidden="true">🌙</div>
+<div style="position:fixed;top:10px;right:10px;font-size:2.2rem;opacity:.1;pointer-events:none;z-index:0;" aria-hidden="true">⭐</div>
+<div style="position:fixed;bottom:10px;left:10px;font-size:2.2rem;opacity:.1;pointer-events:none;z-index:0;" aria-hidden="true">💫</div>
+<div style="position:fixed;bottom:10px;right:10px;font-size:2.2rem;opacity:.1;pointer-events:none;z-index:0;" aria-hidden="true">🌟</div>
+
+<div class="page-wrapper">
+  <!-- Purple-tinted lace top -->
+  <div style="width:100%;height:24px;
+    background-image:radial-gradient(circle 10px at 10px 100%, transparent 9px, rgba(180,160,220,0.5) 10px, rgba(180,160,220,0.5) 13px, transparent 14px);
+    background-size:20px 24px;background-repeat:repeat-x;" aria-hidden="true"></div>
+
+  <div class="p5-layout">
+    <header class="p5-header">
+      <span style="font-size:1.2rem;letter-spacing:.55rem;opacity:.5;display:block;margin-bottom:8px;" aria-hidden="true">🌙 ⭐ 💫 ⭐ 🌙</span>
+      <h1>Memory No. 5</h1>
+
+      <!-- Gingham washi (purple tint) -->
+      <div class="washi" aria-hidden="true"
+           style="width:100px;top:38px;left:50%;transform:translateX(-50%) rotate(-2deg);
+           background-image:repeating-linear-gradient(0deg,transparent,transparent 4px,rgba(160,130,200,0.35) 4px,rgba(160,130,200,0.35) 5px),
+           repeating-linear-gradient(90deg,transparent,transparent 4px,rgba(160,130,200,0.35) 4px,rgba(160,130,200,0.35) 5px);
+           background-color:rgba(230,220,250,0.88);"></div>
+
+      <!-- Flanking washi -->
+      <div class="washi washi-floral" aria-hidden="true"
+           style="width:75px;top:36px;left:5%;transform:rotate(-4deg);
+           background:repeating-linear-gradient(90deg,rgba(230,220,250,0.9) 0px,rgba(230,220,250,0.9) 8px,rgba(180,160,220,0.9) 8px,rgba(180,160,220,0.9) 10px);"></div>
+      <div class="washi washi-hearts" aria-hidden="true"
+           style="width:70px;top:36px;right:6%;transform:rotate(5deg);
+           background-color:rgba(220,210,245,0.88);
+           background-image:radial-gradient(ellipse 4px 3px at 10px 50%, rgba(130,100,200,0.55) 100%, transparent 100%);
+           background-size:20px 100%;"></div>
+
+      <!-- Pink rose + moon stamp combo -->
+      <div aria-hidden="true" style="position:absolute;top:20px;right:10%;transform:rotate(5deg);">
+        <div style="width:44px;height:54px;background:linear-gradient(145deg,#e8ddf8,#d0c0e8);
+          border:1.5px dashed rgba(160,130,200,0.5);padding:5px;border-radius:2px;
+          box-shadow:1px 2px 8px rgba(100,80,150,0.18);
+          display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;">
+          <span style="font-size:1.1rem;">🌙</span>
+          <span style="font-family:'Patrick Hand',cursive;font-size:.5rem;color:#4a3060;letter-spacing:.04em;">NIGHT SKY</span>
+          <span style="font-family:'Patrick Hand',cursive;font-size:.5rem;color:#4a3060;">20 · 26</span>
+        </div>
+      </div>
+
+      <!-- CSS rose cluster left -->
+      <div aria-hidden="true" style="position:absolute;top:18px;left:10%;opacity:.5;display:flex;gap:4px;">
+        <div class="css-rose rose-sm">
+          <div class="petal"></div><div class="petal"></div><div class="petal"></div>
+          <div class="petal"></div><div class="petal"></div><div class="leaf"></div>
+        </div>
+        <div class="css-rose rose-sm" style="transform:rotate(20deg)scale(.7);opacity:.7;">
+          <div class="petal"></div><div class="petal"></div><div class="petal"></div>
+          <div class="petal"></div><div class="petal"></div><div class="leaf"></div>
+        </div>
+      </div>
+
+      <div style="margin-top:10px;display:flex;justify-content:center;" aria-hidden="true">
+        <div class="journal-label" style="border-color:rgba(160,130,200,0.4);color:#4a3060;background:#f0ecfc;">
+          <span class="label-no" style="color:#6a50a0;">NIGHT COLLECTION — No. 00005</span>
+          counting stars
+        </div>
+      </div>
+    </header>
+
+    <div class="p5-main">
+
+      <!-- LEFT: Photo col -->
+      <div class="p5-photo-col" data-anim="pop">
+
+        <!-- Gingham star bg -->
+        <div class="p5-star-bg bg-gingham-sm" style="background-color:rgba(230,220,250,0.3);" aria-hidden="true"></div>
+
+        <!-- CSS rose + bow above photo -->
+        <div aria-hidden="true" style="position:absolute;top:-36px;left:50%;transform:translateX(-50%);z-index:5;display:flex;align-items:center;gap:8px;">
+          <div class="css-rose rose-sm" style="opacity:.8;">
+            <div class="petal"></div><div class="petal"></div><div class="petal"></div>
+            <div class="petal"></div><div class="petal"></div><div class="leaf"></div>
+          </div>
+          <div class="bow-satin" style="transform:scale(.85);">
+            <div class="bow-knot" style="background:radial-gradient(circle at 40% 35%,#d8c8f8,#7050b8);"></div>
+            <div class="bow-tail-l" style="background:linear-gradient(180deg,#7050b8,#9070d8);"></div>
+            <div class="bow-tail-r" style="background:linear-gradient(180deg,#7050b8,#9070d8);"></div>
+          </div>
+          <div class="css-rose rose-sm" style="opacity:.8;transform:rotate(-15deg);">
+            <div class="petal"></div><div class="petal"></div><div class="petal"></div>
+            <div class="petal"></div><div class="petal"></div><div class="leaf"></div>
+          </div>
+        </div>
+
+        <div class="p5-polaroid">
+          <!-- Two washi tapes pinning photo -->
+          <div class="washi" aria-hidden="true"
+               style="width:56px;top:-9px;left:22%;transform:translateX(0) rotate(-4deg);
+               background-color:rgba(220,210,245,0.88);"></div>
+          <div class="washi" aria-hidden="true"
+               style="width:50px;top:-9px;right:18%;transform:translateX(0) rotate(5deg);
+               background-color:rgba(200,185,235,0.88);"></div>
+
+          <div class="img-wrap">
+            <span style="font-size:3rem;" aria-hidden="true">🌙</span>
+            <span style="font-size:1.8rem;" aria-hidden="true">💫</span>
+            <span style="font-family:'Indie Flower',cursive;font-size:.75rem;color:#4a3060;opacity:.65;">add photo here</span>
+          </div>
+          <p class="pol-caption">counting stars 🌙</p>
+
+          <!-- Star sticker corners -->
+          <span style="position:absolute;top:8px;right:8px;font-size:1rem;transform:rotate(15deg);" aria-hidden="true">⭐</span>
+          <span style="position:absolute;bottom:10px;right:10px;font-size:.9rem;transform:rotate(-8deg);" aria-hidden="true">💫</span>
+        </div>
+
+        <div style="margin-top:6px;" aria-hidden="true">
+          <div class="lace-strip" style="background-image:radial-gradient(circle 7px at 7px 100%, transparent 6px, rgba(180,160,220,0.5) 7px, rgba(180,160,220,0.5) 10px, transparent 11px);"></div>
+        </div>
+
+        <!-- Wax seal heart + tag -->
+        <div style="display:flex;justify-content:space-between;align-items:flex-end;margin-top:18px;padding:0 6px;" aria-hidden="true">
+          <div class="wax-seal" style="background:radial-gradient(circle at 38% 32%,#b8a0e0 0%,#7050b8 45%,#4a3090 100%);
+            box-shadow:inset 0 3px 8px rgba(255,255,255,0.3),0 4px 14px rgba(80,60,160,0.4);">💜</div>
+          <div class="gift-tag" style="border-color:rgba(160,130,200,0.4);transform:rotate(3deg);background:#f0ecfc;">
+            <span style="font-size:.7rem;opacity:.7;color:#4a3060;">last memory</span><br/>
+            <span style="font-family:'Satisfy',cursive;font-size:1rem;color:#4a3060;">No. 005</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- RIGHT: Message -->
+      <div class="p5-msg-col" data-anim="fade" data-delay="200">
+        <span style="display:inline-block;background:linear-gradient(135deg,#e8ddf8,#d0c0e8);
+          border:1.5px solid rgba(160,130,200,0.35);border-radius:20px;
+          padding:5px 16px;font-family:'Indie Flower',cursive;font-size:.85rem;color:#4a3060;">
+          page 05 of 05
+        </span>
+
+        <div style="background:linear-gradient(135deg,#f0ecfc,#faf8ff);border-left:3px solid #9070d8;
+          padding:10px 14px;border-radius:0 6px 6px 0;
+          font-family:'Indie Flower',cursive;font-size:.92rem;color:#3a2050;line-height:1.5;">
+          you are the author of your own story.
+          <span style="display:block;text-align:right;font-size:.75rem;color:#9070d8;margin-top:4px;">♡</span>
+        </div>
+
+        <!-- Vintage journal writing card -->
+        <div class="journal-writing-card">
+          <div class="washi" aria-hidden="true"
+               style="width:55px;top:-8px;right:14px;transform:rotate(-3deg);
+               background-color:rgba(220,210,245,0.88);"></div>
+
+          <p>I've been counting stars since I met you, and I think you might be one of them. The kind that moves quietly, leaving a trail people look up to follow.</p>
+          <p style="margin-top:8px;">Every chapter we've shared has only made me more certain: some people are just magic, and you are absolutely one of them. 🌙✨</p>
+          <p style="margin-top:8px;font-family:'Satisfy',cursive;font-size:1.2rem;color:#4a3060;">
+            written under the stars 💫
+          </p>
+        </div>
+
+        <!-- Main note card -->
+        <div style="position:relative;margin-top:4px;">
+          <div style="position:absolute;inset:-6px;background:#e0d8f4;border-radius:3px;
+            transform:rotate(2deg);box-shadow:2px 3px 10px rgba(100,80,160,0.18);z-index:0;"></div>
+          <div class="note-card" style="position:relative;z-index:1;background-color:#faf8ff;
+            border-left:none;
+            background-image:repeating-linear-gradient(transparent,transparent 24px,rgba(140,110,200,0.12) 24px,rgba(140,110,200,0.12) 25px);">
+            <p style="padding-top:4px;font-family:'Kalam',cursive;font-size:.98rem;color:#3a2050;line-height:1.85;">
+              Happy Birthday. May this year be full of moonlit
+              moments, soft starlight, and every good thing
+              your heart has been quietly wishing for. 🌙
+            </p>
+            <p style="font-family:'Satisfy',cursive;font-size:1.3rem;color:#4a3060;
+              text-align:right;margin-top:8px;border-top:1px dashed rgba(140,110,200,0.3);padding-top:8px;">
+              always yours 💜
+            </p>
+          </div>
+        </div>
+
+        <div style="background:linear-gradient(145deg,#f0ecfc,#faf8ff);
+          border:1.5px dashed rgba(140,110,200,0.4);border-radius:6px;
+          padding:12px 14px;font-family:'Indie Flower',cursive;font-size:.88rem;
+          color:#3a2050;text-align:center;">
+          focus on the good
+          <span style="display:block;font-size:.75rem;color:#9070d8;margin-top:3px;">♡</span>
+        </div>
+
+        <!-- Final CTA -->
+        <div style="margin-top:8px;text-align:center;">
+          <p style="font-family:'Indie Flower',cursive;font-size:.95rem;color:#4a3060;margin-bottom:10px;opacity:.8;">
+            one more surprise is waiting… 💌
+          </p>
+          <a href="final.html" class="btn-bow" style="background:linear-gradient(135deg,#d0c0e8,#9070d8);">
+            open your letter 💌
+          </a>
+        </div>
+
+        <!-- Bow + rose row -->
+        <div style="display:flex;align-items:center;gap:12px;margin-top:6px;" aria-hidden="true">
+          <div class="bow-satin bow-sm" style="">
+            <div class="bow-knot" style="background:radial-gradient(circle at 40% 35%,#d8c8f8,#7050b8);"></div>
+            <div class="bow-tail-l" style="background:linear-gradient(180deg,#7050b8,#9070d8);"></div>
+            <div class="bow-tail-r" style="background:linear-gradient(180deg,#7050b8,#9070d8);"></div>
+          </div>
+          <div class="css-rose rose-sm">
+            <div class="petal"></div><div class="petal"></div><div class="petal"></div>
+            <div class="petal"></div><div class="petal"></div><div class="leaf"></div>
+          </div>
+          <span style="font-size:1.1rem;">🌙</span>
+          <span style="font-size:1rem;">⭐</span>
+        </div>
+      </div>
+    </div>
+
+    <nav style="display:flex;justify-content:space-between;align-items:center;margin-top:36px;flex-wrap:wrap;gap:12px;" aria-label="Photo navigation">
+      <a href="photo4.html" class="btn-bow" style="font-size:.95rem;padding:9px 20px;background:linear-gradient(135deg,#d0c0e8,#9070d8);">← prev memory</a>
+      <span style="font-size:1.2rem;" aria-hidden="true">🌙 ⭐ 💫</span>
+      <a href="../index.html" class="btn-bow" style="font-size:.95rem;padding:9px 20px;background:linear-gradient(135deg,#d0c0e8,#9070d8);">back to start →</a>
+    </nav>
+    <div style="margin-top:24px;text-align:center;font-family:'Indie Flower',cursive;font-size:.88rem;color:#6a50a0;opacity:.6;">
+      page 5 of 5 &nbsp;·&nbsp; 🌙 ⭐ 💫
+    </div>
+  </div>
+
+  <div style="width:100%;height:22px;margin-top:8px;
+    background-image:radial-gradient(circle 9px at 9px 0%, transparent 8px, rgba(180,160,220,0.5) 9px, rgba(180,160,220,0.5) 12px, transparent 13px);
+    background-size:18px 22px;background-repeat:repeat-x;" aria-hidden="true"></div>
+</div>
+
+<script src="../js/utils.js"></script>
+<script src="../js/animations.js"></script>
+<script src="../js/transitions.js"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    ScrapAnimations.initFloatingHearts('.hearts-container', 8);
+    ScrapAnimations.initSparkles(true);
+    ScrapAnimations.initCursorTrail();
+    ScrapAnimations.initEntranceAnims();
+    ScrapAnimations.initStickerHover();
+    ScrapTransitions.initTransitions();
+  });
+</script>
+</body>
+</html>

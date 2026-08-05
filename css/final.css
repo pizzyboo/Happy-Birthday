@@ -1,0 +1,375 @@
+/* ================================================
+   FINAL PAGE — ENVELOPE + LETTER + CONFETTI
+   ================================================ */
+
+body.final-page {
+  background: linear-gradient(160deg, #fde8ed 0%, #fdf6ee 40%, #e8f4fb 100%);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* ── Stage ── */
+.final-stage {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  padding: 40px 20px;
+  position: relative;
+  z-index: 1;
+}
+
+/* ── Title ── */
+.final-title {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.final-title .pre-text {
+  font-family: var(--font-shadow);
+  font-size: 1.1rem;
+  color: var(--text-mid);
+  letter-spacing: 0.15em;
+  display: block;
+  margin-bottom: 8px;
+  opacity: 0.8;
+}
+
+/* ── Envelope ── */
+.envelope-wrap {
+  position: relative;
+  width: 340px;
+  max-width: 90vw;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+}
+
+.envelope-wrap:hover {
+  transform: scale(1.02) translateY(-4px);
+}
+
+.envelope-wrap:hover .env-hint {
+  opacity: 1;
+}
+
+/* Envelope body */
+.envelope {
+  width: 100%;
+  aspect-ratio: 3 / 2;
+  position: relative;
+  filter: drop-shadow(0 10px 30px rgba(180,130,100,0.25));
+}
+
+/* Back flap (always visible) */
+.env-body {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(160deg, #f7c5d0 0%, #fde8ed 60%, #f5e6d3 100%);
+  border-radius: 4px 4px 8px 8px;
+  border: 1.5px solid rgba(196,149,106,0.25);
+}
+
+/* Envelope side triangles */
+.env-body::before,
+.env-body::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  width: 0;
+  height: 0;
+}
+
+.env-body::before {
+  left: 0;
+  border-style: solid;
+  border-width: 0 0 130px 170px;
+  border-color: transparent transparent rgba(240,160,184,0.3) transparent;
+}
+
+.env-body::after {
+  right: 0;
+  border-style: solid;
+  border-width: 130px 170px 0 0;
+  border-color: rgba(240,160,184,0.2) transparent transparent transparent;
+}
+
+/* Bottom V-fold */
+.env-bottom {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 60%;
+  background: linear-gradient(160deg, #fde8ed, #f7c5d0);
+  clip-path: polygon(0 100%, 50% 0%, 100% 100%);
+  border-radius: 0 0 8px 8px;
+  border-top: 1px solid rgba(196,149,106,0.2);
+}
+
+/* Flap (top, animated) */
+.env-flap {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 55%;
+  background: linear-gradient(160deg, #f0a0b8, #f7c5d0);
+  clip-path: polygon(0 0, 50% 100%, 100% 0);
+  transform-origin: top center;
+  transition: transform 0.6s cubic-bezier(0.34, 1.2, 0.64, 1);
+  border-radius: 4px 4px 0 0;
+  z-index: 5;
+}
+
+/* Flap open state */
+.envelope-wrap.open .env-flap {
+  transform: rotateX(180deg);
+}
+
+/* Heart seal on flap */
+.env-seal {
+  position: absolute;
+  top: 18%;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 2rem;
+  z-index: 6;
+  transition: transform 0.4s ease, opacity 0.3s ease;
+  filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));
+}
+
+.envelope-wrap.open .env-seal {
+  transform: translateX(-50%) scale(0);
+  opacity: 0;
+}
+
+/* Letter peeking out */
+.env-letter-peek {
+  position: absolute;
+  bottom: 20%;
+  left: 10%;
+  right: 10%;
+  height: 45%;
+  background: var(--white);
+  border-radius: 4px 4px 2px 2px;
+  box-shadow: 0 -4px 12px rgba(0,0,0,0.06);
+  transform: translateY(20px);
+  opacity: 0;
+  transition: transform 0.5s ease 0.4s, opacity 0.5s ease 0.4s;
+  z-index: 4;
+  /* Lined paper */
+  background-image: repeating-linear-gradient(
+    transparent, transparent 9px,
+    rgba(196,149,106,0.15) 9px, rgba(196,149,106,0.15) 10px
+  );
+}
+
+.envelope-wrap.open .env-letter-peek {
+  transform: translateY(-30px);
+  opacity: 1;
+}
+
+/* Hint text */
+.env-hint {
+  text-align: center;
+  font-family: var(--font-cute);
+  font-size: 0.95rem;
+  color: var(--text-mid);
+  margin-top: 18px;
+  opacity: 0.7;
+  transition: opacity 0.3s ease;
+  animation: arrowBounce 1.5s ease-in-out infinite;
+}
+
+/* ── Letter reveal ── */
+.letter-container {
+  max-width: 600px;
+  width: 90vw;
+  margin-top: 0;
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.8s cubic-bezier(0.4, 0, 0.2, 1),
+              margin-top 0.5s ease,
+              opacity 0.6s ease;
+  opacity: 0;
+}
+
+.letter-container.revealed {
+  max-height: 900px;
+  margin-top: 40px;
+  opacity: 1;
+}
+
+.letter-paper {
+  background: var(--white);
+  border-radius: var(--radius-md);
+  padding: 48px 44px 40px;
+  box-shadow: var(--shadow-strong);
+  position: relative;
+  /* Lined paper */
+  background-image: repeating-linear-gradient(
+    transparent, transparent 27px,
+    rgba(196,149,106,0.12) 27px, rgba(196,149,106,0.12) 28px
+  );
+  background-size: 100% 28px;
+  background-position: 0 16px;
+  border-left: 4px solid var(--pink-deep);
+}
+
+/* Red margin */
+.letter-paper::before {
+  content: '';
+  position: absolute;
+  left: 44px;
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  background: rgba(240,160,184,0.35);
+}
+
+/* Corner fold */
+.letter-paper::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 36px;
+  height: 36px;
+  background: linear-gradient(135deg, var(--beige-dark) 50%, transparent 50%);
+  border-radius: 0 0 var(--radius-md) 0;
+}
+
+.letter-date {
+  font-family: var(--font-handwrite);
+  font-size: 0.95rem;
+  color: var(--text-light);
+  text-align: right;
+  margin-bottom: 22px;
+  display: block;
+}
+
+.letter-greeting {
+  font-family: var(--font-title);
+  font-size: 2rem;
+  color: var(--brown-dark);
+  margin-bottom: 20px;
+}
+
+.letter-body {
+  font-family: var(--font-journal);
+  font-size: 1.05rem;
+  color: var(--text-dark);
+  line-height: 1.9;
+  margin-bottom: 16px;
+}
+
+.letter-sign-off {
+  font-family: var(--font-handwrite);
+  font-size: 1.1rem;
+  color: var(--text-mid);
+  margin-top: 24px;
+}
+
+.letter-signature {
+  font-family: var(--font-title);
+  font-size: 2.2rem;
+  color: var(--brown-dark);
+  margin-top: 8px;
+}
+
+/* Stickers on letter */
+.letter-sticker {
+  position: absolute;
+  font-size: 1.6rem;
+  pointer-events: none;
+  user-select: none;
+}
+
+/* ── Confetti ── */
+.confetti-piece {
+  position: fixed;
+  width: 10px;
+  height: 10px;
+  top: -20px;
+  border-radius: 2px;
+  animation: confettiFall linear forwards;
+  pointer-events: none;
+  z-index: 9990;
+}
+
+@keyframes confettiFall {
+  0%   { transform: translateY(0)    rotate(0deg)   translateX(0);    opacity: 1; }
+  80%  { opacity: 1; }
+  100% { transform: translateY(110vh) rotate(720deg) translateX(var(--drift, 40px)); opacity: 0; }
+}
+
+/* ── Music Controls ── */
+.music-controls {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: var(--white);
+  border-radius: var(--radius-xl);
+  padding: 10px 18px;
+  box-shadow: var(--shadow-med);
+  border: 2px solid var(--pink-light);
+}
+
+.music-controls .music-label {
+  font-family: var(--font-cute);
+  font-size: 0.85rem;
+  color: var(--text-mid);
+}
+
+.btn-music {
+  background: var(--pink);
+  border: none;
+  border-radius: var(--radius-full);
+  width: 38px;
+  height: 38px;
+  font-size: 1.1rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.2s ease, background 0.2s ease;
+  box-shadow: 0 2px 8px rgba(240,160,184,0.35);
+}
+
+.btn-music:hover {
+  transform: scale(1.12);
+  background: var(--pink-deep);
+}
+
+.music-note {
+  animation: musicBounce 0.6s ease-in-out infinite alternate;
+}
+
+@keyframes musicBounce {
+  from { transform: translateY(-2px); }
+  to   { transform: translateY(2px); }
+}
+
+/* ── Floating hearts specific to final page ── */
+.final-hearts .heart {
+  font-size: clamp(1rem, 2.5vw, 1.8rem);
+}
+
+/* ── Back to home button ── */
+.back-home-wrap {
+  margin-top: 36px;
+  text-align: center;
+}
+
+/* ── Responsive ── */
+@media (max-width: 600px) {
+  .letter-paper { padding: 32px 20px 28px; }
+  .letter-paper::before { display: none; }
+  .envelope-wrap { width: 280px; }
+  .music-controls { bottom: 16px; right: 12px; padding: 8px 14px; }
+}

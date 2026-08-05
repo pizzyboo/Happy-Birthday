@@ -1,0 +1,253 @@
+/* ================================================
+   HOME PAGE — SCRAPBOOK COLLAGE STYLES
+   ================================================ */
+
+/* ── Hero Banner ── */
+.hero {
+  text-align: center;
+  padding: 60px 20px 20px;
+  position: relative;
+}
+
+.hero-inner {
+  display: inline-block;
+  position: relative;
+  padding: 32px 48px 28px;
+}
+
+/* Hero paper backing */
+.hero-inner::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: var(--white);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-med);
+  transform: rotate(-1deg);
+  z-index: -1;
+}
+
+.hero-inner::after {
+  content: '';
+  position: absolute;
+  inset: 4px;
+  border: 2px dashed rgba(196,149,106,0.25);
+  border-radius: calc(var(--radius-lg) - 4px);
+  pointer-events: none;
+}
+
+/* Tape across the hero card */
+.hero-tape {
+  position: absolute;
+  width: 80px;
+  height: 22px;
+  border-radius: 2px;
+  z-index: 5;
+  opacity: 0.9;
+}
+
+.hero-tape-left {
+  top: -8px;
+  left: 20px;
+  transform: rotate(-8deg);
+  background: repeating-linear-gradient(90deg, #ffd6e0 0px, #ffd6e0 10px, rgba(255,214,224,0.6) 10px, rgba(255,214,224,0.6) 12px);
+}
+
+.hero-tape-right {
+  top: -8px;
+  right: 20px;
+  transform: rotate(6deg);
+  background: repeating-linear-gradient(90deg, #f9efc7 0px, #f9efc7 10px, rgba(249,239,199,0.6) 10px, rgba(249,239,199,0.6) 12px);
+}
+
+/* Invite text */
+.invite-text {
+  margin-top: 14px;
+  font-family: var(--font-cute);
+  font-size: clamp(1rem, 2.5vw, 1.25rem);
+  color: var(--text-mid);
+  max-width: 420px;
+  margin-left: auto;
+  margin-right: auto;
+  line-height: 1.65;
+}
+
+/* Arrow hint */
+.arrow-hint {
+  display: inline-block;
+  font-family: var(--font-handwrite);
+  font-size: 1rem;
+  color: var(--brown-light);
+  margin-top: 6px;
+  animation: arrowBounce 1.5s ease-in-out infinite;
+}
+
+@keyframes arrowBounce {
+  0%, 100% { transform: translateY(0); }
+  50%       { transform: translateY(5px); }
+}
+
+/* ── Decorative row (flowers/stars above grid) ── */
+.deco-row {
+  text-align: center;
+  font-size: 1.5rem;
+  margin: 8px 0 24px;
+  letter-spacing: 0.5rem;
+  opacity: 0.7;
+}
+
+/* ── Scrapbook Grid ── */
+.scrapbook-grid {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 20px 24px 60px;
+  position: relative;
+}
+
+/* Grid uses CSS Grid with some manual nudging */
+.collage-area {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: auto;
+  gap: 30px 24px;
+  align-items: start;
+}
+
+/* Intentional vertical offset for scrapbook feel */
+.collage-area .polaroid:nth-child(2) { margin-top: 40px; }
+.collage-area .polaroid:nth-child(3) { margin-top: -15px; }
+.collage-area .polaroid:nth-child(4) { margin-top: 20px; }
+.collage-area .polaroid:nth-child(6) { margin-top: -10px; }
+
+/* ── Photo Placeholder (for pages without real photos) ── */
+.photo-placeholder {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  font-size: 2.5rem;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Each photo has a unique pastel gradient background */
+.photo-placeholder.p1 { background: linear-gradient(135deg, #fde8ed, #ffc8d8); }
+.photo-placeholder.p2 { background: linear-gradient(135deg, #c8e6f5, #b8d8f0); }
+.photo-placeholder.p3 { background: linear-gradient(135deg, #fdf6ee, #f5e6d3); }
+.photo-placeholder.p4 { background: linear-gradient(135deg, #d4edda, #c5e1cb); }
+.photo-placeholder.p5 { background: linear-gradient(135deg, #f9efc7, #f0e0a0); }
+
+.photo-placeholder .ph-label {
+  font-family: var(--font-cute);
+  font-size: 0.85rem;
+  color: var(--text-mid);
+  text-align: center;
+  padding: 0 12px;
+}
+
+/* ── Tape on individual polaroids ── */
+.polaroid .tape-h {
+  position: absolute;
+  width: 56px;
+  height: 18px;
+  top: -7px;
+  left: 50%;
+  transform: translateX(-50%) rotate(-2deg);
+  border-radius: 2px;
+  z-index: 20;
+  pointer-events: none;
+  opacity: 0.88;
+}
+
+/* ── Side decorations ── */
+.side-deco-left,
+.side-deco-right {
+  position: fixed;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  font-size: 1.6rem;
+  opacity: 0.35;
+  pointer-events: none;
+  user-select: none;
+  z-index: 1;
+}
+
+.side-deco-left  { left: 14px; }
+.side-deco-right { right: 14px; }
+
+/* ── Footer strip ── */
+.footer-strip {
+  background: linear-gradient(90deg, var(--pink-light), var(--cream), var(--blue-light));
+  padding: 22px 0;
+  text-align: center;
+  position: relative;
+  border-top: 2px dashed rgba(196,149,106,0.2);
+}
+
+.footer-strip p {
+  font-family: var(--font-cute);
+  font-size: 0.95rem;
+  color: var(--text-mid);
+}
+
+/* Final page teaser card */
+.final-teaser {
+  max-width: 440px;
+  margin: 0 auto 60px;
+  padding: 0 20px;
+}
+
+.final-teaser-inner {
+  background: linear-gradient(135deg, var(--pink-light), var(--cream));
+  border-radius: var(--radius-xl);
+  padding: 28px 24px;
+  text-align: center;
+  box-shadow: var(--shadow-pink);
+  border: 2px dashed var(--pink-deep);
+  position: relative;
+}
+
+.final-teaser-inner .big-emoji {
+  font-size: 3rem;
+  animation: gentleFloat 3s ease-in-out infinite;
+}
+
+.final-teaser-inner p {
+  font-family: var(--font-cute);
+  font-size: 1.05rem;
+  color: var(--text-mid);
+  margin: 12px 0 20px;
+}
+
+/* ── Responsive ── */
+@media (max-width: 900px) {
+  .collage-area {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 24px 20px;
+  }
+
+  /* Reset manual offsets on smaller screens */
+  .collage-area .polaroid:nth-child(n) { margin-top: 0; }
+  .collage-area .polaroid:nth-child(even) { margin-top: 20px; }
+}
+
+@media (max-width: 560px) {
+  .collage-area {
+    grid-template-columns: 1fr 1fr;
+    gap: 18px;
+  }
+
+  .hero-inner { padding: 22px 20px 18px; }
+  .side-deco-left, .side-deco-right { display: none; }
+}
+
+@media (max-width: 400px) {
+  .collage-area { grid-template-columns: 1fr; max-width: 280px; margin: 0 auto; }
+  .collage-area .polaroid:nth-child(n) { margin-top: 0; }
+}
