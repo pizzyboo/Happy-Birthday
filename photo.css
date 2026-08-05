@@ -1,0 +1,229 @@
+/* ================================================
+   PHOTO DETAIL PAGES — STYLES
+   ================================================ */
+
+/* ── Photo Page Header ── */
+.photo-header {
+  text-align: center;
+  padding: 40px 20px 10px;
+  position: relative;
+}
+
+.photo-header .header-deco {
+  font-size: 1.4rem;
+  letter-spacing: 0.6rem;
+  opacity: 0.6;
+  margin-bottom: 10px;
+  display: block;
+}
+
+.photo-header .page-title {
+  font-family: var(--font-title);
+  font-size: clamp(1.8rem, 5vw, 3rem);
+  color: var(--brown-dark);
+  text-shadow: 2px 2px 0 var(--pink);
+}
+
+/* ── Main Photo Frame ── */
+.photo-stage {
+  display: flex;
+  justify-content: center;
+  padding: 30px 20px 0;
+  position: relative;
+}
+
+/* Paper slip behind the polaroid frame */
+.photo-stage::before {
+  content: '';
+  position: absolute;
+  width: 300px;
+  height: 320px;
+  background: var(--pink-light);
+  border-radius: 4px;
+  transform: rotate(3deg) translate(10px, 10px);
+  top: 40px;
+  left: 50%;
+  margin-left: -150px;
+  box-shadow: var(--shadow-soft);
+  z-index: 0;
+}
+
+.photo-large-frame {
+  position: relative;
+  z-index: 2;
+  /* Extra large polaroid */
+  background: var(--white);
+  padding: 18px 18px 70px 18px;
+  box-shadow: var(--shadow-strong);
+  border-radius: 2px;
+  max-width: 460px;
+  width: 100%;
+}
+
+.photo-large-frame .img-wrap {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  overflow: hidden;
+  background: var(--beige);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.photo-large-frame .img-wrap img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* Photo placeholder gradient (same pattern as home) */
+.img-placeholder {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  font-size: 3.5rem;
+}
+
+.img-placeholder.pp1 { background: linear-gradient(135deg, #fde8ed, #ffc8d8); }
+.img-placeholder.pp2 { background: linear-gradient(135deg, #c8e6f5, #b8d8f0); }
+.img-placeholder.pp3 { background: linear-gradient(135deg, #fdf6ee, #f5e6d3); }
+.img-placeholder.pp4 { background: linear-gradient(135deg, #d4edda, #c5e1cb); }
+.img-placeholder.pp5 { background: linear-gradient(135deg, #f9efc7, #f0e0a0); }
+
+.img-placeholder .ph-hint {
+  font-family: var(--font-cute);
+  font-size: 0.85rem;
+  color: var(--text-mid);
+  text-align: center;
+  padding: 0 16px;
+}
+
+.photo-large-frame .caption-large {
+  text-align: center;
+  font-family: var(--font-handwrite);
+  font-size: 1.35rem;
+  color: var(--text-mid);
+  padding-top: 12px;
+  line-height: 1.4;
+}
+
+/* Tape on large frame */
+.frame-tape {
+  position: absolute;
+  height: 22px;
+  border-radius: 2px;
+  z-index: 10;
+  pointer-events: none;
+  opacity: 0.9;
+}
+
+.frame-tape-top {
+  width: 70px;
+  top: -9px;
+  left: 50%;
+  transform: translateX(-50%) rotate(-3deg);
+}
+
+/* ── Message Card ── */
+.message-section {
+  max-width: 560px;
+  margin: 40px auto 0;
+  padding: 0 20px;
+}
+
+.message-card {
+  background: var(--white);
+  border-radius: var(--radius-md);
+  padding: 30px 32px 24px;
+  box-shadow: var(--shadow-soft);
+  position: relative;
+  /* Lined paper */
+  background-image: repeating-linear-gradient(
+    transparent,
+    transparent 27px,
+    rgba(196,149,106,0.12) 27px,
+    rgba(196,149,106,0.12) 28px
+  );
+  background-size: 100% 28px;
+  background-position: 0 10px;
+  border-left: 4px solid var(--pink-deep);
+}
+
+/* Red margin line */
+.message-card::before {
+  content: '';
+  position: absolute;
+  left: 36px;
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  background: rgba(240,160,184,0.3);
+}
+
+.message-card .quote-mark {
+  font-family: var(--font-title);
+  font-size: 5rem;
+  color: var(--pink-deep);
+  line-height: 0.5;
+  display: block;
+  margin-bottom: 12px;
+  opacity: 0.5;
+}
+
+.message-card p {
+  font-family: var(--font-journal);
+  font-size: 1.05rem;
+  color: var(--text-dark);
+  line-height: 1.85;
+  margin-bottom: 16px;
+}
+
+.message-card .signature {
+  font-family: var(--font-title);
+  font-size: 1.6rem;
+  color: var(--brown-dark);
+  text-align: right;
+  margin-top: 8px;
+}
+
+/* Corner stickers on message card */
+.msg-sticker {
+  position: absolute;
+  font-size: 1.4rem;
+  pointer-events: none;
+}
+
+/* ── Scrapbook corner decorations on photo pages ── */
+.corner-deco {
+  position: fixed;
+  font-size: 2.8rem;
+  opacity: 0.2;
+  pointer-events: none;
+  user-select: none;
+}
+
+.corner-deco.tl { top: 10px;    left: 10px; }
+.corner-deco.tr { top: 10px;    right: 10px; }
+.corner-deco.bl { bottom: 10px; left: 10px; }
+.corner-deco.br { bottom: 10px; right: 10px; }
+
+/* ── Unique per-page background tints ── */
+body.page-1 { background-color: #fdf0f4; }
+body.page-2 { background-color: #eef6fc; }
+body.page-3 { background-color: #fdf8f0; }
+body.page-4 { background-color: #f0f8f2; }
+body.page-5 { background-color: #fdfaf0; }
+
+/* ── Responsive ── */
+@media (max-width: 600px) {
+  .photo-large-frame { max-width: 100%; }
+  .message-card { padding: 22px 18px 18px; }
+  .message-card::before { display: none; }
+  .photo-stage::before { display: none; }
+}
